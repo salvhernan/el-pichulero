@@ -361,6 +361,37 @@ table.tabla{width:100%;border-collapse:collapse;font-size:14px}
 .tabla .ins{display:inline-block;vertical-align:middle;margin:-4px 7px -3px 0}
 .offer .oc{display:flex;gap:10px;align-items:center;min-width:0}
 .offer .oc .cn{white-space:normal}
+
+/* ===== barra superior: inicio + stats ===== */
+.topbar{display:flex;gap:8px;justify-content:space-between;margin:-2px 0 10px}
+.topbar button{flex:1;border:2px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;padding:7px 10px 6px;
+  font-family:var(--display);font-weight:800;font-size:17px;letter-spacing:.3px;cursor:pointer}
+.topbar button:active{transform:translateY(1px)}
+/* ===== ficha de stats (hoja sobre el juego) ===== */
+.sheet-bg{position:fixed;inset:0;z-index:50;background:rgba(8,21,48,.55);display:flex;justify-content:center;align-items:flex-end}
+.sheet{width:100%;max-width:470px;max-height:92vh;overflow-y:auto;background:var(--bg);border-radius:18px 18px 0 0;
+  padding:14px 12px calc(18px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 30px rgba(0,0,0,.35)}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:sheetUp .22s ease-out}}
+@keyframes sheetUp{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.sheet-head{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.sheet-head h2{font-size:30px;flex:1}
+.sheet-head button{border:0;background:var(--paper);color:var(--ink);border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer}
+.tbl-wrap{overflow-x:auto;margin-top:6px}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{font-family:var(--display);font-weight:800;text-align:left;color:var(--muted);padding:4px 6px;border-bottom:2px solid var(--line)}
+.tbl td{padding:6px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td.n,.tbl th.n{text-align:right}
+.attr-list{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+.attr-list div{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:5px 0;font-size:15px}
+/* ===== confirmación ===== */
+.ask-bg{align-items:center;padding:16px;z-index:60}
+.ask{width:100%;max-width:400px;background:var(--bg);border-radius:16px;padding:18px 14px 14px;box-shadow:0 12px 34px rgba(0,0,0,.4)}
+.ask p{margin:0 0 4px;font-size:17px}
+/* ===== tarjeta de partida guardada ===== */
+.savecard{text-align:left;display:flex;gap:12px;align-items:center;background:var(--paper);border:2px solid var(--gold);
+  border-radius:14px;padding:12px;margin:14px 0 4px;box-shadow:var(--shadow)}
+.savecard b{display:block;font-family:var(--display);font-size:22px;line-height:1}
+.savecard span{font-size:14px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -603,7 +634,12 @@ const Store=(()=>{let mem={},ok=true;
   try{localStorage.setItem('__t','1');localStorage.removeItem('__t');}catch(e){ok=false;}
   return{get(k){try{return ok?localStorage.getItem(k):(k in mem?mem[k]:null);}catch(e){return k in mem?mem[k]:null;}},
          set(k,v){try{ok?localStorage.setItem(k,v):mem[k]=v;}catch(e){mem[k]=v;}}};})();
-const HOF_KEY='pichulero_hof_v4';   // se mantiene pa' no perder los récords
+const HOF_KEY='pichulero_hof_v4';
+/* partida en curso: se guarda sola en cada paso de la temporada */
+const SAVE_KEY='pichulero_save_v1';
+function saveGame(){try{if(S&&S.alive&&!S.retired)Store.set(SAVE_KEY,JSON.stringify(S));}catch(e){}}
+function loadGame(){try{const x=JSON.parse(Store.get(SAVE_KEY)||'null');return x&&x.name&&x.club?x:null;}catch(e){return null;}}
+function clearGame(){try{Store.set(SAVE_KEY,'');}catch(e){}}   // se mantiene pa' no perder los récords
 const loadHOF=()=>{try{const x=JSON.parse(Store.get(HOF_KEY)||'[]');return Array.isArray(x)?x:[];}catch(e){return [];}};
 const saveHOF=l=>{try{Store.set(HOF_KEY,JSON.stringify(l.slice(0,15)));}catch(e){}};
 
@@ -3051,7 +3087,11 @@ function render(n){
 }
 function screen(html,withHud){
   const c=document.createElement('div');c.className='fade';
-  c.innerHTML=`<div class="flagbar" aria-hidden="true"><i></i><i></i><i></i></div>`+(withHud?hudHTML():'')+html;
+  c.innerHTML=`<div class="flagbar" aria-hidden="true"><i></i><i></i><i></i></div>`+(withHud?topbarHTML()+hudHTML():'')+html;
+  if(withHud){
+    const h=c.querySelector('#tbHome'),st=c.querySelector('#tbStats');
+    if(h)h.onclick=goHome; if(st)st.onclick=openStats;
+  }
   return c;
 }
 function once(c){ /* evita doble toque en botones de decisión */
@@ -3163,6 +3203,7 @@ function carretePicardia(b){
 /* =================== FLUJO DE LA TEMPORADA =================== */
 const SLOTS=['verano','temporada','invierno','fin'];
 function startSeason(){
+  S.golIni=S.goles;S.asiIni=S.asistencias;     // pa' contar TODOS los goles del año, también los de minijuegos y copas
   S.queue=['verano'];
   if(S.flags.supercopa===S.year)S.queue.push('supercopa');
   S.queue.push('temporada');
@@ -3175,6 +3216,7 @@ function startSeason(){
   S.queue.push('liga','balance','tienda','fichajes');
 }
 function nextStep(){
+  if(S.alive&&!S.retired)saveGame();
   if(!S.alive)return render(screenDeath(S.deathMsg||'Tu historia terminó antes de tiempo.'));
   if(S.retired)return render(screenEnd());
   const step=S.queue.shift();
@@ -3645,12 +3687,11 @@ function simulateSeason(){
   else if(rol>=-3)jug=rnd(Math.round(pj*.78),pj);
   else if(rol>=-10)jug=rnd(Math.round(pj*.45),Math.round(pj*.8));
   else jug=rnd(Math.round(pj*.12),Math.round(pj*.4));
-  const f=clamp((rating-lg.pow+18)/48,.05,1.25);
-  const tp=S.items.chuteadores?1.3:1;
-  let g=0,a=0;
-  if(S.pos==='delantero'){g=Math.round(jug*f*.55*tp);a=Math.round(jug*f*.18);}
-  else if(S.pos==='mediocampista'){g=Math.round(jug*f*.22*tp);a=Math.round(jug*f*.38);}
-  else if(S.pos==='defensa'){g=Math.round(jug*f*.08);a=Math.round(jug*f*.08);}
+  /* goles por partido de un jugador "promedio" de la liga, según posición; se escala con qué tan bueno erís vs la liga */
+  const m=clamp(1+(rating-lg.pow)/20,.3,2.1);
+  const tp=S.items.chuteadores?1.3:1,ruido=()=>.8+Math.random()*.4;
+  const RATE={delantero:[.44,.13],mediocampista:[.15,.21],defensa:[.05,.05],arquero:[0,0]}[S.pos]||[0,0];
+  let g=Math.round(jug*RATE[0]*m*tp*ruido()),a=Math.round(jug*RATE[1]*m*ruido());
   const penales=S.pos!=='arquero'&&S.picardia>=58&&jug>=10?clamp(Math.round((S.picardia-50)/10)+rnd(-1,1),1,6):0;
   if(penales)g+=Math.floor(penales/2);
   g=Math.max(0,g);a=Math.max(0,a);
@@ -3665,7 +3706,7 @@ function simulateSeason(){
   else if(pos>n-3){S.prestigio-=7;S.hinchada-=6;}
   else S.prestigio-=2;
   S.prestigio+=Math.round((rating-lg.pow)/5);
-  if(S.pos!=='arquero'&&g>=Math.round(pj*.6)){goleador=true;S.prestigio+=6;S.honours.push(`Goleador de ${lg.n} ${S.year}`);}
+  if(S.pos!=='arquero'&&(S.golIni!=null?S.goles-S.golIni:g)>=Math.round(pj*.6)){goleador=true;S.prestigio+=6;S.honours.push(`Goleador de ${lg.n} ${S.year}`);}
   if(S.pos==='arquero'&&pos<=2&&rating>=lg.pow){S.prestigio+=4;hito(`Arco menos batido de ${lg.n} (${S.year})`);}
   addPlata(S.salary);
   /* formato chileno: el campeón sube directo, la liguilla pelea el segundo cupo, los dos últimos bajan */
@@ -3686,6 +3727,9 @@ function simulateSeason(){
   clampAll();
   S.lastTable=rows.map((r,i)=>({name:r.name,pts:r.pts,pos:i+1,me:r.name===S.club,
     up:!!lg.up&&i===0,lq:!!lg.liguilla&&i+1>=lg.liguilla[0]&&i+1<=lg.liguilla[1],dn:!!lg.down&&i>=n-2,cp:S.league==='CHI_1'&&i<7}));
+  /* el resumen del año suma también lo que metiste en eventos, minijuegos y copas */
+  const gAnio=S.golIni!=null?Math.max(g,S.goles-S.golIni):g,aAnio=S.asiIni!=null?Math.max(a,S.asistencias-S.asiIni):a;
+  g=gAnio;a=aAnio;
   S.history.push({y:S.year,club:S.club,lg:S.league,pos,g,a,jug});
   S.histMedia.push({y:S.year,m:Math.round(rating)});
   return {pos,total:n,pj,campeon,asciende,desciende,goleador,liguilla,g,a,jug,rating:Math.round(rating),penales,lesion};
@@ -4187,6 +4231,7 @@ function sparkHTML(){
    <div class="legend"><span>${h[0].y}: ${h[0].m}</span><span>Peak: ${best.m} en ${best.y}</span><span>${h[h.length-1].y}: ${h[h.length-1].m}</span></div></div>`;
 }
 function screenEnd(){
+  clearGame();
   const lg=legendFor(),sc=scoreOf(),pl=pichuleroLevel();
   const c=screen(`<div class="fin-top"><p class="muted">Fin de la carrera</p><h1>${esc(S.name)}</h1>${S.apodo?`<p class="apodo">«${esc(S.apodo)}»</p>`:''}
      <p class="muted" style="margin-top:6px">Colgó los chuteadores a los ${S.age} años en ${esc(S.club)}, ${lname(S.league)} de ${cname(S.league)}.</p></div>
@@ -4206,6 +4251,7 @@ function screenEnd(){
   return c;
 }
 function screenDeath(msg){
+  clearGame();
   const sc=scoreOf(),pl=pichuleroLevel();
   const c=screen(`<div class="fin-top"><p class="muted">Q.E.P.D.</p><h1>${esc(S.name)}</h1>${S.apodo?`<p class="apodo">«${esc(S.apodo)}»</p>`:''}<p class="muted" style="margin-top:6px">${S.age} años, jugador de ${esc(S.club)}.</p></div>
    <div class="res bad"><p class="txt">${msg}</p><p class="txt" style="margin-top:8px">Los hinchas te despidieron en ${estadio(S.club)} con un lienzo gigante, y en la curva del accidente apareció una animita con tu camiseta y velas que nunca se apagan.</p></div>
@@ -4236,19 +4282,77 @@ function screenHOF(mine){
   return c;
 }
 
+
+/* =================== INICIO Y STATS DURANTE LA PARTIDA =================== */
+function topbarHTML(){return `<nav class="topbar" aria-label="Menú de la partida"><button id="tbHome">🏠 Inicio</button><button id="tbStats">📊 Mis stats</button></nav>`;}
+function askConfirm(msg,si,no,onYes){
+  const old=document.getElementById('askBox');if(old)old.remove();
+  const bg=document.createElement('div');bg.className='sheet-bg ask-bg';bg.id='askBox';
+  bg.innerHTML=`<div class="ask" role="alertdialog" aria-modal="true"><p>${msg}</p><div class="stack"><button class="btn" id="askYes">${si}</button><button class="btn ghost" id="askNo">${no}</button></div></div>`;
+  document.body.appendChild(bg);
+  const close=()=>bg.remove();
+  bg.querySelector('#askYes').onclick=()=>{close();onYes();};
+  bg.querySelector('#askNo').onclick=close;
+  bg.onclick=e=>{if(e.target===bg)close();};
+  bg.querySelector('#askYes').focus();
+}
+function goHome(){
+  askConfirm('¿Volver al inicio? Tu partida queda guardada y la seguís con «Continuar carrera».','Ir al inicio','Seguir jugando',
+    ()=>{closeStats();render(screenTitle());});
+}
+function closeStats(){const o=document.getElementById('statsSheet');if(o)o.remove();}
+function statsHTML(){
+  const tech=['ritmo','resistencia','regate','pase','def'],men=['agresividad','responsabilidad','liderazgo','disciplina','picardia'];
+  const full={ritmo:'Ritmo',resistencia:'Resistencia',regate:'Regate',pase:'Pase',agresividad:'Agresividad',responsabilidad:'Responsabilidad',
+    liderazgo:'Liderazgo',disciplina:'Disciplina',picardia:'Picardía'};
+  const nm=k=>k==='def'?POSITIONS[S.pos].ab:full[k];
+  const attrs=[...tech,...men].map(a=>`<div><span>${nm(a)}</span><b>${S[a]}</b></div>`).join('');
+  const h=S.history||[];
+  const tabla=h.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Año</th><th>Club</th><th class="n">PJ</th><th class="n">⚽</th><th class="n">🅰️</th><th class="n">Pos.</th></tr></thead><tbody>
+    ${h.map(x=>`<tr><td>${x.y}</td><td>${esc(x.club)}</td><td class="n">${x.jug??'–'}</td><td class="n">${x.g??0}</td><td class="n">${x.a??0}</td><td class="n">${x.pos?x.pos+'°':'–'}</td></tr>`).join('')}
+    </tbody></table></div>`:`<p class="muted small">Cuando termine tu primera temporada vai a ver acá el resumen año a año.</p>`;
+  const clubes=[...(S.exClubs||[]),S.club].filter((x,i,a)=>a.indexOf(x)===i);
+  return `<div class="sheet-head"><h2>${esc(S.name)}${S.apodo?` «${esc(S.apodo)}»`:''}</h2><button id="stClose" aria-label="Cerrar stats">✕</button></div>
+   <p class="muted small">${POSITIONS[S.pos].label}, ${S.age} años. Temporada ${S.season} en ${esc(S.club)}. Media ${Math.round(playerRating())}.</p>
+   <div class="card"><h3>Los números de la carrera</h3>${cells()}</div>
+   <div class="card"><h3>Temporada a temporada</h3>${tabla}</div>
+   ${sparkHTML()}
+   <div class="card"><h3>Atributos</h3><div class="attr-list">${attrs}</div></div>
+   <div class="card"><h3>Clubes</h3>${clubes.map(x=>`<div class="li">${esc(x)}${x===S.club?' (actual)':''}</div>`).join('')}</div>
+   ${S.honours.length?`<div class="card"><h3>Palmarés</h3>${S.honours.map(x=>`<div class="li">🏆 ${esc(x)}</div>`).join('')}</div>`:''}
+   ${S.achievements.length?`<div class="card"><h3>Hitos</h3>${S.achievements.map(x=>`<div class="li">${esc(x)}</div>`).join('')}</div>`:''}
+   ${amorHTML()}
+   ${prontuHTML()}
+   <div class="stack"><button class="btn" id="stBack">Volver al juego</button></div>`;
+}
+function openStats(){
+  if(!S)return;closeStats();
+  const bg=document.createElement('div');bg.className='sheet-bg';bg.id='statsSheet';
+  bg.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="Mis stats">${statsHTML()}</div>`;
+  document.body.appendChild(bg);
+  bg.onclick=e=>{if(e.target===bg)closeStats();};
+  bg.querySelector('#stClose').onclick=closeStats;bg.querySelector('#stBack').onclick=closeStats;
+  const k=e=>{if(e.key==='Escape'){closeStats();document.removeEventListener('keydown',k);}};document.addEventListener('keydown',k);
+  bg.querySelector('#stClose').focus();
+}
+
 /* =================== INICIO =================== */
 function screenTitle(){
-  const hof=loadHOF();
+  const hof=loadHOF(),sv=loadGame();
   const c=screen(`<div class="hero portada">
      <div class="lienzo" role="img" aria-label="Lienzo de barra que dice El Pichulero">
        <h1>El Pichulero</h1><div class="lz2">de la cancha de tierra<br>${STAR}a la gloria${STAR}</div></div>
      <p class="pitch">Parte a los 16 en un club chico y arma tu carrera entre la cancha, el camarín, el carrete y el amor. Cada decisión te puede hacer ídolo... o dejarte en todas las cuentas de farándula.</p>
-     <div class="stack"><button class="btn" id="btnStart">Crear mi carrera</button>
+     ${sv?`<div class="savecard">${insignia(sv.club,40)}<div><b>${esc(sv.name)}</b><span>${sv.age} años en ${esc(sv.club)}, ${sv.year}. ⚽ ${sv.goles} · 🏆 ${sv.titulos}</span></div></div>`:''}
+     <div class="stack">${sv?'<button class="btn" id="btnCont">Continuar carrera</button>':''}<button class="btn ${sv?'ghost':''}" id="btnStart">${sv?'Empezar una carrera nueva':'Crear mi carrera'}</button>
        ${hof.length?'<button class="btn ghost" id="btnHof">Salón de la fama</button>':''}</div>
      ${hof.length?`<p class="fine">El récord de este teléfono: ${esc(hof[0].name)}, con ${miles(hof[0].score)} puntos.</p>`:''}
      <p class="fine">Trae garabatos, carrete y fútbol chileno de verdad.</p>
    </div>`,false);
-  c.querySelector('#btnStart').onclick=()=>render(screenSetup());
+  c.querySelector('#btnStart').onclick=()=>{
+    if(!sv)return render(screenSetup());
+    askConfirm(`Si empezái una carrera nueva se borra la partida guardada de <b>${esc(sv.name)}</b>. ¿Seguro?`,'Sí, empezar de cero','Cancelar',()=>render(screenSetup()));};
+  const cb=c.querySelector('#btnCont');if(cb)cb.onclick=()=>{S=loadGame();if(!S)return render(screenTitle());nextStep();};
   const h=c.querySelector('#btnHof');if(h)h.onclick=()=>render(screenHOF(null));
   return c;
 }
@@ -4278,7 +4382,7 @@ function screenSetup(){
     sc.innerHTML='<option value="">🎲 Al azar</option>'+(id?L(id).teams.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join(''):'');};
   c.querySelector('#btnConfirm').onclick=()=>{
     S=newState({name:c.querySelector('#inpName').value,pos,pref,league:sl.value||null,club:sc.value||null});
-    render(screenSorteo());};
+    clearGame();render(screenSorteo());};
   c.querySelector('#btnBack').onclick=()=>render(screenTitle());
   return c;
 }
