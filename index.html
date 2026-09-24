@@ -515,6 +515,12 @@ table.tabla{width:100%;border-collapse:collapse;font-size:14px}
 .redes-head{display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
 .redes-head b{display:block;font-family:var(--display);font-size:28px}
 .redes-head span{font-size:13px;color:var(--muted)}
+.tigre{margin-top:12px;border-radius:16px;padding:16px;color:#1a1200;box-shadow:var(--shadow);
+  background:repeating-linear-gradient(115deg,#FFB400 0 22px,#FF9A00 22px 30px,#1a1200 30px 36px,#FF9A00 36px 44px)}
+.tigre>*{background:rgba(255,236,190,.92);border-radius:10px;padding:2px 10px;display:block}
+.tigre .k{font-weight:800;font-size:13px;width:fit-content}
+.tigre h3{font-family:var(--display);font-weight:900;font-size:34px;margin:8px 0 6px;width:fit-content}
+.tigre p{padding:8px 10px}
 </style>
 </head>
 <body>
@@ -1009,6 +1015,7 @@ function pedida(bonus,txt,publico){
   return {t:`${txt} ${n} te abrazó y te dijo que todavía no. El anillo volvió al calcetín.`,bad:true};
 }
 function casarse(lugar,txt,big){
+  if(S.flags.negro&&S.year-S.flags.negro<=14)txt+=' El Negro llevó los anillos amarrados al collar y se robó todas las fotos.';
   const n=par().n;S.amor.estado='casado';S.amor.boda=S.year;amor(10);S.carrete-=4;
   hito(`Se casó con ${n} ${lugar}`);
   return {hl:big?"¡La boda del año!":null,t:txt};
@@ -1482,7 +1489,7 @@ EVENTS.push(
  text:"Un quiltro negro se metió a la cancha en pleno partido y no hay quién lo saque. Persigue la pelota mejor que tu lateral.",
  flavor:"La galería lo corea como si fuera refuerzo.",
  options:[
- {label:"Adoptarlo como mascota del plantel",d:{hinchada:10,liderazgo:2},fx:s=>{hito("Adoptó al quiltro que se metió a la cancha");return "Lo adoptaste y ahora va a todos los partidos con una camiseta chiquitita. Tiene más seguidores que tú.";}},
+ {label:"Adoptarlo como mascota del plantel",d:{hinchada:10,liderazgo:2},fx:s=>{hito("Adoptó al quiltro que se metió a la cancha");s.flags.negro=s.year;return "Lo adoptaste y ahora va a todos los partidos con una camiseta chiquitita. Tiene más seguidores que tú.";}},
  {label:"Hacerle un túnel al perro",d:{hinchada:5,regate:1},res:"Le tiraste un caño al quiltro y la galería se vino abajo. El perro no te lo perdona."},
  {label:"Esperar que lo saquen los guardias",d:{disciplina:1},res:"Tres guardias demoraron diez minutos en sacarlo. El perro ganó."},
  {label:"Sacarlo tú en brazos",d:{hinchada:6,responsabilidad:2},res:"Lo sacaste en brazos y te lamió la cara. Foto del año."}]},
@@ -3224,6 +3231,58 @@ EVENTS.push(
 );
 
 
+
+/* =================== EASTER EGG: EL NEGRO =================== */
+const tieneNegro=()=>S.flags.negro&&S.year-S.flags.negro<=14;
+EVENTS.push(
+{id:"negro_despedida_prev",once:true,minAge:20,slots:TODO,cond:s=>s.flags.negro&&s.year-s.flags.negro>=2&&s.year-s.flags.negro<=14,weight:2.2,dom:"barrio",
+ title:"El Negro se escapó otra vez",
+ text:s=>`En pleno partido, un perro negro con el hocico medio canoso se mete a la cancha. La galería lo reconoce al tiro: es el Negro, el quiltro que adoptaste en ${s.flags.negro}. Viene derechito a buscarte a ti.`,
+ flavor:"El árbitro no sabe si cobrar falta o pedir una foto.",
+ options:[
+ {label:"Hacerle cariño en plena cancha",d:{hinchada:8,forma:3},res:"Te agachaste, el Negro te lamió la cara y el estadio entero aplaudió. Hasta el árbitro se rió. Saliste en todos los noticieros de la noche."},
+ {label:"Llevarlo a la banca pa' que vea el partido",d:{hinchada:5,liderazgo:2},res:"El Negro vio el segundo tiempo sentado al lado del técnico, con la mirada fija en la pelota. Le hicieron una credencial."},
+ {label:"Seguir jugando como si nada",d:{disciplina:2,hinchada:-2},res:"Seguiste jugando. El Negro te persiguió diez minutos y después se echó en el círculo central. La galería te pifió un poquito."}]},
+{id:"negro_carrete",once:true,minAge:20,slots:TODO,cond:s=>s.flags.negro&&s.year-s.flags.negro>=3&&s.year-s.flags.negro<=14&&s.carrete>=25,weight:1.6,dom:"carrete",
+ title:"El Negro te salvó",
+ text:"Vuelves a tu casa de un carrete a las 4 de la mañana y un grupo de gallos te empieza a buscar pelea a la salida. Antes de que alguien tire el primer combo, aparece el Negro ladrando como si fuera un pitbull.",
+ flavor:"Nadie sabe cómo se escapó del patio. Nadie pregunta.",
+ options:[
+ {label:"Irte con el Negro a la casa",d:{carrete:-4,responsabilidad:2,forma:2},res:"Los gallos arrancaron y tú te fuiste caminando con el Negro al lado, moviendo la cola. Le compraste un completo en la bomba de bencina. Se lo merecía."},
+ {label:"Subir la historia del perro héroe",d:{picardia:2},fx:s=>{s.seguidores+=30000;return {hl:"¡Perro héroe!",t:"Contaste la historia en redes y el Negro se volvió viral. Ahora tiene su propia cuenta con más seguidores que la tuya."};}}]}
+);
+
+
+/* =================== EASTER EGG: EL BOLETO EN EL COMPLETO =================== */
+EVENTS.push(
+{id:"boleto_completo",once:true,minAge:18,slots:TODO,weight:.18,dom:"plata",
+ title:"El papel del completo",
+ text:"Te comes un italiano en la Fuente Alemana y, cuando vas a botar la servilleta, te das cuenta de que adentro venía envuelto un boleto de lotería. Sorteo de esta noche.",
+ flavor:"El maestro de la plancha jura que no es suyo.",
+ options:[
+ {label:"Guardarlo y revisarlo en la noche",risk:"1 en 100",
+  fx:s=>{if(ch(.01)){addPlata(2500);s.flags.loteria=1;hito("Se ganó la lotería con un boleto que venía en un completo");
+     return {hl:"¡EL COMPLETO MILLONARIO!",t:"Revisaste los números tres veces, después los revisó tu vieja y después tu vecino. Te ganaste el pozo: 2.500 millones de pesos. Te tiemblan las manos."};}
+   return "Revisaste los números en la noche. No le achuntaste a ni uno. Al menos el completo estaba bueno.";}},
+ {label:"Dejárselo al maestro de la plancha",d:{responsabilidad:2,hinchada:2},
+  fx:s=>ch(.01)?(s.hinchada+=10,{hl:"¡El maestro se hizo millonario!",t:"Le dejaste el boleto al maestro... y ganó el pozo. Te regaló un completo gratis de por vida y le puso tu nombre a un sándwich."})
+   :"Le dejaste el boleto al maestro de la plancha. No ganó nada, pero te dio otro completo de cortesía."}]}
+);
+function screenLoteria(){
+  S.flags.loteria=2;
+  const c=screen(`<article class="ev d-plata"><div class="ev-top"><span class="when">Al otro día</span><span class="dom">Plata</span></div>
+    <h2>¿Pelota o Punta Cana?</h2>
+    <p class="txt">Tenís ${S.age} años y ${pesos(S.plata)} en el banco. Nunca más vai a tener que trabajar. Tu representante te llama nervioso y tu vieja te pregunta qué vai a hacer.</p>
+    <p class="flav">Tus compañeros ya te mandaron diez fotos de playas del Caribe.</p>
+    <div class="opts"><button class="opt" id="btnSigo">Seguir jugando: esto es por amor a la camiseta${chipsFor({d:{hinchada:10,liderazgo:3}})}</button>
+    <button class="opt" id="btnPC">Colgar los chuteadores e irme a Punta Cana</button></div></article>`,true);
+  const go=once(c);
+  c.querySelector('#btnSigo').onclick=go(()=>{const b=snap();S.hinchada+=10;S.liderazgo+=3;hito("Millonario, pero siguió jugando por amor a la camiseta");clampAll();
+    render(screenResult({hl:"¡Juega por amor!",t:"Dijiste en conferencia que la plata no cambia nada y que vas a seguir hasta que el cuerpo aguante. La hinchada te hizo un lienzo gigante."},b));});
+  c.querySelector('#btnPC').onclick=go(()=>{S.flags.puntacana=1;S.retired=true;hito("Se retiró millonario a Punta Cana");render(screenEnd());});
+  return c;
+}
+
 /* =================== ARQUERO: eventos adaptados al puesto =================== 
    map: mueve lo que un evento sube/baja a la stat de arquero que corresponde.
    opts: reemplaza opciones que son de jugador de cancha. */
@@ -3437,6 +3496,7 @@ function nextStep(){
   if(S.alive&&!S.retired)saveGame();
   if(!S.alive)return render(screenDeath(S.deathMsg||'Tu historia terminó antes de tiempo.'));
   if(S.retired)return render(screenEnd());
+  if(S.flags.loteria===1)return render(screenLoteria());
   const step=S.queue.shift();
   if(!step)return advanceSeason();
   if(SLOTS.includes(step)){S.slot=step;S.mes=mesLabel(step);return showEvent(drawEvent(step));}
@@ -4448,7 +4508,7 @@ function screenDespedida(forzado){
   S.retired=true;S.mes='enero';
   const c=screen(`<article class="ev d-barrio"><div class="ev-top"><span class="when">Enero de ${S.year}</span><span class="dom">Despedida</span></div>
    <h2>Tu partido de despedida</h2>
-   <p class="txt">${forzado?`A los ${S.age} años el cuerpo dijo basta.`:'Llegó el momento.'} ${esc(S.club)} te organizó un partido de despedida en ${estadio(S.club)}, con ex compañeros, rivales de toda la vida y ${S.hinchada>=60?'el estadio lleno':'los hinchas más fieles'}. ¿Cómo querís cerrar la historia?</p>
+   <p class="txt">${tieneNegro()?'El Negro, ya viejito, entró trotando a la cancha antes del pitazo inicial y se sentó a tu lado para la foto. ':''}${forzado?`A los ${S.age} años el cuerpo dijo basta.`:'Llegó el momento.'} ${esc(S.club)} te organizó un partido de despedida en ${estadio(S.club)}, con ex compañeros, rivales de toda la vida y ${S.hinchada>=60?'el estadio lleno':'los hinchas más fieles'}. ¿Cómo querís cerrar la historia?</p>
    <div class="opts">
     <button class="opt" data-m="penal">Patear el último penal de tu carrera${chipsFor({risk:'minijuego'})}</button>
     <button class="opt" data-m="aplauso">Jugar diez minutos y salir aplaudido${chipsFor({d:{hinchada:6}})}</button>
@@ -4478,6 +4538,8 @@ function pichuleroLevel(){
   return {t:"Pichulero mayor",d:"Te pillaron en más carretes de los que puede recordar la farándula. Leyenda de la noche chilena."};
 }
 function afterlife(){
+  if(S.flags.puntacana)return "Cobraste el premio y te fuiste a Punta Cana. Hoy tenís un bar en la playa que se llama «El Completo Millonario» y los chilenos que llegan te piden fotos sin saber si eras futbolista o qué.";
+  if(tieneNegro())return "Te fuiste a vivir al campo con el Negro. Ya está viejito y camina lento, pero cada vez que ve una pelota sale corriendo como el día que se metió a la cancha.";
   if(S.plata>=1500&&S.renta>0)return "Invertiste bien y hoy tenís una cadena de sushi con catorce locales en Santiago. Nunca más trabajaste un lunes.";
   if(S.flags.inferiores)return `Dirigís las inferiores de ${S.flags.inferiores}. Tres de tus cabros ya debutaron en primera y uno te dedicó su primer gol.`;
   if(S.flags.inaf===1&&S.liderazgo>=60)return "Con el título del INAF en la mano, hoy dirigís en la Primera B. Gritái más en la banca que lo que corriste en la cancha.";
@@ -4528,11 +4590,15 @@ function sparkHTML(){
     <circle cx="${X(bi).toFixed(1)}" cy="${Y(best.m).toFixed(1)}" r="5" fill="var(--gold)" stroke="var(--ink)" stroke-width="1.5"/></svg>
    <div class="legend"><span>${h[0].y}: ${h[0].m}</span><span>Peak: ${best.m} en ${best.y}</span><span>${h[h.length-1].y}: ${h[h.length-1].m}</span></div></div>`;
 }
+const TIGRE_CLUB='Concón National';
+function esTigre(){return S.club===TIGRE_CLUB&&!(S.exClubs||[]).length&&!S.flags.puntacana;}
 function screenEnd(){
   clearGame();
+  if(esTigre())hito('El Tigre Fernández');
   const lg=legendFor(),sc=scoreOf(),pl=pichuleroLevel();
   const c=screen(`<div class="fin-top"><p class="muted">Fin de la carrera</p><h1>${esc(S.name)}</h1>${S.apodo?`<p class="apodo">«${esc(S.apodo)}»</p>`:''}
      <p class="muted" style="margin-top:6px">Colgó los chuteadores a los ${S.age} años en ${esc(S.club)}, ${lname(S.league)} de ${cname(S.league)}.</p></div>
+   ${esTigre()?`<div class="tigre"><div class="k">🐯 Logro secreto desbloqueado</div><h3>El Tigre Fernández</h3><p>Toda tu carrera en ${TIGRE_CLUB}, sin irte nunca. El dueño del club te llamó en persona, te regaló una camiseta enmarcada y te dijo que en Concón vai a comer gratis hasta que te mueras.</p></div>`:''}
    <div class="legend-box"><div class="k">Tu carrera se pareció a la de</div><h3>${lg.name}</h3><p><b>«${lg.tag}»</b>. ${lg.why}</p></div>
    <div class="card"><h3>Los números</h3>${cells()}</div>
    ${sparkHTML()}
