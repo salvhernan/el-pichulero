@@ -392,6 +392,129 @@ table.tabla{width:100%;border-collapse:collapse;font-size:14px}
   border-radius:14px;padding:12px;margin:14px 0 4px;box-shadow:var(--shadow)}
 .savecard b{display:block;font-family:var(--display);font-size:22px;line-height:1}
 .savecard span{font-size:14px;color:var(--muted)}
+
+/* ================= MINIJUEGOS v2: más cancha, menos formulario ================= */
+.mg-ins{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:.2px;margin-top:14px;padding:8px 10px;border-radius:10px;
+  background:color-mix(in srgb,var(--dom) 12%,var(--paper2));color:var(--ink)}
+/* la cancha: pasto cortado en franjas + líneas de cal */
+.mgz{height:132px;border-radius:14px;border:3px solid #fff;outline:2px solid color-mix(in srgb,var(--pasto) 55%,#000);
+  background:
+    radial-gradient(circle at 50% 50%,transparent 27px,rgba(255,255,255,.75) 28px,rgba(255,255,255,.75) 30px,transparent 31px),
+    linear-gradient(90deg,transparent calc(50% - 1px),rgba(255,255,255,.75) calc(50% - 1px),rgba(255,255,255,.75) calc(50% + 1px),transparent calc(50% + 1px)),
+    repeating-linear-gradient(90deg,#2E8B4F 0 34px,#27794A 34px 68px);
+  box-shadow:inset 0 0 30px rgba(0,0,0,.28)}
+.mgz .win{background:linear-gradient(180deg,rgba(255,216,77,.20),rgba(255,216,77,.42));border:0;
+  box-shadow:inset 3px 0 0 var(--gold),inset -3px 0 0 var(--gold),0 0 18px rgba(255,216,77,.55)}
+.mgz .win::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:repeating-linear-gradient(90deg,#fff 0 5px,transparent 5px 9px);opacity:.8}
+.mgz .ball{font-size:30px;filter:drop-shadow(0 5px 3px rgba(0,0,0,.45))}
+@media (prefers-reduced-motion:no-preference){.mgz .ball>span{display:inline-block;animation:spin .6s linear infinite}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mgz.flash-ok{animation:flashOk .35s}
+.mgz.flash-no{animation:flashNo .35s}
+@keyframes flashOk{0%{box-shadow:inset 0 0 0 200px rgba(76,211,134,.55)}100%{box-shadow:inset 0 0 30px rgba(0,0,0,.28)}}
+@keyframes flashNo{0%{box-shadow:inset 0 0 0 200px rgba(255,75,62,.55)}100%{box-shadow:inset 0 0 30px rgba(0,0,0,.28)}}
+.mgpop{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--display);font-weight:900;font-size:34px;color:#fff;
+  text-shadow:0 3px 0 rgba(0,0,0,.4);pointer-events:none;z-index:3;white-space:nowrap}
+@media (prefers-reduced-motion:no-preference){.mgpop{animation:pop .6s ease-out forwards}}
+@keyframes pop{0%{transform:translate(-50%,-30%) scale(.6);opacity:0}25%{transform:translate(-50%,-50%) scale(1.15);opacity:1}100%{transform:translate(-50%,-80%) scale(1);opacity:0}}
+/* marcador de intentos */
+.dots{gap:8px;margin-top:10px}
+.dots i{width:28px;height:28px;border-radius:50%;background:var(--paper2);border:2px dashed var(--line);display:grid;place-items:center;font-style:normal;font-size:15px;color:#fff;font-weight:900}
+.dots i.hit{border-style:solid}.dots i.hit::after{content:"✓"}
+.dots i.miss{border-style:solid}.dots i.miss::after{content:"✕"}
+/* mash: el botón gigante */
+.mash{height:auto;padding:18px 14px;background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--red) 22%,var(--paper)),var(--paper2) 70%);
+  border:3px solid var(--red);outline:0;box-shadow:0 5px 0 var(--redd)}
+.mash .n{font-size:58px;color:var(--red)}
+.mash.bump{transform:translateY(3px);box-shadow:0 2px 0 var(--redd)}
+.mash .tbar{height:12px;border-radius:6px}
+.mash .tbar i{background:linear-gradient(90deg,var(--gold),var(--red))}
+/* memoria: pads de colores */
+.pad{height:78px;border:0;color:#fff;font-size:22px;border-radius:16px;box-shadow:0 5px 0 rgba(0,0,0,.28);transition:transform .08s,filter .12s;filter:saturate(.75) brightness(.92)}
+.pad:nth-child(1){background:#0039A6}.pad:nth-child(2){background:#D52B1E}.pad:nth-child(3){background:#237A45}.pad:nth-child(4){background:#B06A25}
+.pad.lit{filter:saturate(1.3) brightness(1.35);transform:translateY(3px) scale(1.03);box-shadow:0 0 0 4px var(--gold),0 0 24px var(--gold);color:#fff}
+/* reflejo: el arco de noche */
+.refl{height:150px;border-radius:14px;border:0;color:#fff;font-family:var(--display);font-weight:900;font-size:32px;position:relative;overflow:hidden;
+  background:
+    linear-gradient(90deg,transparent 14%,#fff 14%,#fff calc(14% + 5px),transparent calc(14% + 5px),transparent calc(86% - 5px),#fff calc(86% - 5px),#fff 86%,transparent 86%) top/100% 72% no-repeat,
+    linear-gradient(#fff,#fff) 14% 0/72% 5px no-repeat,
+    repeating-linear-gradient(45deg,rgba(255,255,255,.12) 0 2px,transparent 2px 12px) 14% 5px/72% 70% no-repeat,
+    linear-gradient(180deg,#0B1A3B 0 72%,#27794A 72%);
+  text-shadow:0 3px 0 rgba(0,0,0,.5)}
+.refl.go{background-color:transparent;animation:none}
+.refl.go{box-shadow:inset 0 0 0 200px rgba(76,211,134,.55)}
+.refl.fail{box-shadow:inset 0 0 0 200px rgba(255,75,62,.6)}
+/* potencia */
+.pwr{height:46px;border-radius:12px;background:
+    repeating-linear-gradient(90deg,transparent 0 calc(10% - 1px),rgba(0,0,0,.12) calc(10% - 1px) 10%),var(--paper2)}
+.pwr .zone{background:rgba(255,216,77,.35);border-left:3px solid var(--gold);border-right:3px solid var(--gold);box-shadow:0 0 14px rgba(255,216,77,.6)}
+.pwr .fill{background:linear-gradient(90deg,#4CC27A,var(--gold) 55%,var(--red));opacity:.9}
+.hold{height:92px;font-size:26px;border-radius:18px;box-shadow:0 6px 0 var(--redd)}
+/* volantín: cielo de septiembre */
+.vol{height:250px;border:0;border-radius:14px;
+  background:radial-gradient(circle at 85% 18%,#FFF3B0 0 22px,rgba(255,243,176,.5) 23px,transparent 44px),
+    radial-gradient(ellipse 60px 18px at 22% 30%,rgba(255,255,255,.85),transparent 70%),
+    radial-gradient(ellipse 80px 20px at 62% 72%,rgba(255,255,255,.7),transparent 70%),
+    linear-gradient(180deg,#4F9BE8,#BFE0FA)}
+.vol .band{background:rgba(255,255,255,.22);border-top:2px dashed #fff;border-bottom:2px dashed #fff}
+.vol.in .band{background:rgba(76,211,134,.35);border-color:#4CC27A}
+.vol .kite{font-size:38px;filter:drop-shadow(0 4px 4px rgba(0,0,0,.25))}
+.vol .pct{background:rgba(255,255,255,.85);padding:2px 8px;border-radius:8px}
+/* atrapa */
+.cell9{height:84px;border-radius:14px;border:0;background:color-mix(in srgb,var(--ink) 8%,var(--paper2));box-shadow:inset 0 3px 0 rgba(0,0,0,.08)}
+.cell9.on{background:color-mix(in srgb,var(--gold) 45%,var(--paper));box-shadow:0 0 0 3px var(--gold),0 6px 14px rgba(0,0,0,.2)}
+@media (prefers-reduced-motion:no-preference){.cell9.on{animation:popin .16s ease-out}}
+@keyframes popin{from{transform:scale(.7)}to{transform:scale(1)}}
+.cell9.hit{background:var(--good);color:#fff;box-shadow:none}
+.cell9.bad{background:var(--bad);color:#fff;box-shadow:none}
+.mgscore{font-size:26px}
+/* cachipún */
+.cachi button{height:104px;border-radius:16px;font-size:42px;background:var(--paper);box-shadow:0 5px 0 var(--line);transition:transform .08s}
+.cachi button:active{transform:translateY(4px);box-shadow:0 1px 0 var(--line)}
+.cachilog{font-size:16px;padding:10px;border-radius:12px;background:var(--paper2)}
+.cachilog .big{font-size:34px;letter-spacing:6px;display:block;line-height:1.2}
+/* palo: el arco con tres lados */
+.goal{position:relative;margin-top:12px;height:150px;border-radius:12px 12px 0 0;overflow:hidden;
+  background:linear-gradient(180deg,#0B1A3B 0 78%,#27794A 78%)}
+.goal .frame{position:absolute;left:8%;right:8%;top:12%;height:66%;border:6px solid #fff;border-bottom:0;
+  background:repeating-linear-gradient(45deg,rgba(255,255,255,.14) 0 2px,transparent 2px 12px),repeating-linear-gradient(-45deg,rgba(255,255,255,.14) 0 2px,transparent 2px 12px);
+  display:grid;grid-template-columns:repeat(3,1fr)}
+.goal button{border:0;background:transparent;color:#fff;font-family:var(--display);font-weight:900;font-size:17px;cursor:pointer;
+  border-right:2px dashed rgba(255,255,255,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.goal button:last-child{border-right:0}
+.goal button span{font-size:28px}
+.goal button:hover,.goal button:focus-visible{background:rgba(255,216,77,.28)}
+/* trivia */
+.topts{counter-reset:op}
+.topt{position:relative;padding-left:48px;box-shadow:0 3px 0 var(--line)}
+.topt::before{counter-increment:op;content:counter(op,upper-alpha);position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--dom);color:#fff;font-family:var(--display);font-weight:900}
+.tq{font-family:var(--display);font-size:22px;font-weight:800;line-height:1.1}
+/* la noche */
+.stages i{height:10px}
+.stage{background:linear-gradient(135deg,color-mix(in srgb,var(--neon) 16%,var(--paper2)),var(--paper2));border-left:4px solid var(--neon)}
+
+/* atributos: técnicos (6) arriba, mentales (5) abajo */
+.attrs.tech{grid-template-columns:repeat(6,1fr)}
+.attrs.mens{grid-template-columns:repeat(5,1fr);margin-top:3px}
+.at small{font-size:10.5px}
+.odio .mt b{color:var(--bad)}
+.b-odio{background:repeating-linear-gradient(135deg,var(--bad) 0 6px,color-mix(in srgb,var(--bad) 65%,#000) 6px 12px);margin-left:auto}
+.odio .bar{display:flex;justify-content:flex-end}
+.topbar{gap:6px}.topbar button{font-size:15px;padding:7px 4px 6px}
+.tabh{font-size:22px;margin:16px 0 6px}
+.tab-res{background:var(--paper);border:2px solid var(--good);border-radius:14px;padding:12px;margin-top:8px}
+.tab-res.bad{border-color:var(--bad)}
+.tab-res .hl{display:block;font-family:var(--display);font-size:24px;font-weight:900;margin-bottom:4px}
+.pareja{display:flex;gap:12px;align-items:center}
+.pareja .ph{width:58px;height:58px;border-radius:50%;background:color-mix(in srgb,var(--amor,#E0457B) 25%,var(--paper2));display:grid;place-items:center;font-size:32px;flex:none}
+.pareja .pw b{display:block;font-family:var(--display);font-size:26px;line-height:1}
+.pareja .pw span{display:block;font-size:14px;color:var(--muted)}
+.bar.big{height:12px}
+.b-amor{background:linear-gradient(90deg,#FF8FB8,var(--amor,#E0457B))}
+.redes-head{display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
+.redes-head b{display:block;font-family:var(--display);font-size:28px}
+.redes-head span{font-size:13px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -565,10 +688,28 @@ function sonRivales(a,b){const r=RIVAL[a];return !!(r&&r.some(x=>x.club===b));}
 
 /* =================== POSICIONES =================== */
 const POSITIONS={
-delantero:{label:"Delantero",sub:"El que la mete",special:"Definición",ab:"DEF",key:["def","ritmo"]},
-mediocampista:{label:"Mediocampista",sub:"El que la reparte",special:"Visión",ab:"VIS",key:["pase","regate"]},
-defensa:{label:"Defensa",sub:"Por acá no pasa nadie",special:"Marca",ab:"MAR",key:["def","resistencia"]},
-arquero:{label:"Arquero",sub:"El último loco",special:"Reflejos",ab:"REF",key:["def","resistencia"]}};
+delantero:{label:"Delantero",sub:"El que la mete",special:"Tiro",ab:"TIR",key:["def","ritmo"]},
+mediocampista:{label:"Mediocampista",sub:"El que la reparte",special:"Tiro",ab:"TIR",key:["pase","regate"]},
+defensa:{label:"Defensa",sub:"Por acá no pasa nadie",special:"Tiro",ab:"TIR",key:["marca","resistencia"]},
+arquero:{label:"Arquero",sub:"El último loco",special:"Reflejos",ab:"REF",key:["def","marca"]}};
+/* 6 atributos técnicos. Por dentro son las mismas 6 llaves; cambia el nombre según seai de cancha o arquero:
+   cancha:  ritmo=RIT  def=TIR  pase=PAS  regate=REG  marca=DEF  resistencia=FIS
+   arquero: def=REF  marca=ATA  resistencia=EST  pase=SAQ  regate=POS  ritmo=VEL */
+const TECH=['ritmo','def','pase','regate','marca','resistencia'];
+const TECH_ORDER={cancha:['ritmo','def','pase','regate','marca','resistencia'],arquero:['def','marca','resistencia','pase','regate','ritmo']};
+const TECH_LAB={cancha:{ritmo:'RIT',def:'TIR',pase:'PAS',regate:'REG',marca:'DEF',resistencia:'FIS'},
+  arquero:{def:'REF',marca:'ATA',resistencia:'EST',pase:'SAQ',regate:'POS',ritmo:'VEL'}};
+const TECH_NAME={cancha:{ritmo:'Ritmo',def:'Tiro',pase:'Pase',regate:'Regate',marca:'Defensa',resistencia:'Físico'},
+  arquero:{def:'Reflejos',marca:'Atajada',resistencia:'Estiramiento',pase:'Saque',regate:'Posicionamiento',ritmo:'Velocidad'}};
+const tipoPos=p=>(p||(S&&S.pos))==='arquero'?'arquero':'cancha';
+/* partidas guardadas con la versión anterior (5 atributos) */
+function migrarAtributos(st){
+  if(!st||st.marca!=null)return st;
+  if(st.pos==='defensa'){st.marca=st.def;st.def=Math.max(20,Math.round(st.def*.72));}
+  else if(st.pos==='arquero'){st.marca=Math.round((st.def+st.resistencia)/2);}
+  else st.marca=Math.max(20,Math.round((st.resistencia+st.ritmo)/2)-8);
+  return st;
+}
 
 /* =================== LEYENDAS =================== */
 /* títulos mayores: los de Segunda y Primera B no te hacen leyenda */
@@ -576,7 +717,7 @@ function titMay(s){return s.honours.filter(h=>/^(Liga de Primera|Copa Chile|Supe
 const LEGENDS=[
 {name:"Alexis Sánchez",tag:"El Niño Maravilla",cond:s=>s.pos!=='arquero'&&s.pos!=='defensa'&&s.ritmo>=80&&s.def>=76&&s.goles>=90&&titMay(s)>=4,
  why:"Salió de Tocopilla y terminó en los clubes más grandes del planeta. Explosivo, incansable y con hambre en cada pelota dividida."},
-{name:"Elías Figueroa",tag:"Don Elías",cond:s=>s.pos==='defensa'&&s.def>=80&&s.prestigio>=75,
+{name:"Elías Figueroa",tag:"Don Elías",cond:s=>s.pos==='defensa'&&s.marca>=80&&s.prestigio>=75,
  why:"Para muchos, el mejor defensa de la historia de Sudamérica: elegancia, jerarquía y mando desde el fondo."},
 {name:"Claudio Bravo",tag:"El Capitán",cond:s=>s.pos==='arquero'&&s.responsabilidad>=72&&s.liderazgo>=62&&titMay(s)>=2,
  why:"Frío bajo los palos, capitán de la generación dorada y de los que levantan copas sin hacer ruido."},
@@ -638,7 +779,7 @@ const HOF_KEY='pichulero_hof_v4';
 /* partida en curso: se guarda sola en cada paso de la temporada */
 const SAVE_KEY='pichulero_save_v1';
 function saveGame(){try{if(S&&S.alive&&!S.retired)Store.set(SAVE_KEY,JSON.stringify(S));}catch(e){}}
-function loadGame(){try{const x=JSON.parse(Store.get(SAVE_KEY)||'null');return x&&x.name&&x.club?x:null;}catch(e){return null;}}
+function loadGame(){try{const x=JSON.parse(Store.get(SAVE_KEY)||'null');return x&&x.name&&x.club?migrarAtributos(x):null;}catch(e){return null;}}
 function clearGame(){try{Store.set(SAVE_KEY,'');}catch(e){}}   // se mantiene pa' no perder los récords
 const loadHOF=()=>{try{const x=JSON.parse(Store.get(HOF_KEY)||'[]');return Array.isArray(x)?x:[];}catch(e){return [];}};
 const saveHOF=l=>{try{Store.set(HOF_KEY,JSON.stringify(l.slice(0,15)));}catch(e){}};
@@ -653,7 +794,16 @@ function clubStrength(name,lid){
 const COMUNAS_STGO=['Macul','Ñuñoa','Las Condes','La Cisterna','La Florida','Independencia','San Bernardo','San Joaquín','Santiago','Colina','Recoleta'];
 function ciudadDe(club){return ciudad(club)||club;}
 function zonaDe(club){const c=ciudadDe(club);return COMUNAS_STGO.includes(c)?'Santiago':c;}
+function atributosIniciales(pos){
+  const b=()=>rnd(32,48),a={ritmo:b(),def:b(),pase:b(),regate:b(),marca:b(),resistencia:b()};
+  const up=(k,v)=>a[k]=clamp(a[k]+v,20,60);
+  if(pos==='delantero'){up('def',7);up('ritmo',6);up('marca',-9);}
+  else if(pos==='mediocampista'){up('pase',7);up('regate',5);}
+  else if(pos==='defensa'){up('marca',7);up('resistencia',6);up('def',-7);up('regate',-3);}
+  return a;
+}
 function newState(cfg){
+  if(!cfg.pos)cfg.pos=pick(Object.keys(POSITIONS));
   const nat='CL';
   let lid=cfg.league, club=cfg.club;
   if(!lid||!L(lid)){const r=Math.random();lid=r<.45?'CHI_2':r<.8?'CHI_B':'CHI_1';}
@@ -663,7 +813,7 @@ function newState(cfg){
     name:(cfg.name&&cfg.name.trim())?cfg.name.trim().slice(0,24):"El Pichulero",
     pos:cfg.pos||pick(Object.keys(POSITIONS)), nat, league:lid, club,
     age:16, season:1, year:2026, slot:null, mes:'',
-    ritmo:b(),resistencia:b(),regate:b(),pase:b(),def:b(),
+    ...atributosIniciales(cfg.pos),
     agresividad:rnd(30,60),responsabilidad:rnd(28,58),liderazgo:rnd(22,52),disciplina:rnd(28,58),picardia:rnd(22,44),
     techo:rnd(70,96), seguidores:rnd(300,1500), apodo:null, celeb:null, histMedia:[],
     amor:{pref:cfg.pref||'mujeres',estado:'soltero',pareja:null,cand:null,quimica:0,desde:0,hijos:0,exs:[],hist:[],cool:0,pais:null,junto:1},
@@ -673,7 +823,7 @@ function newState(cfg){
     items:{}, alive:true, retired:false, deathMsg:null,
     log:[],recent:[],flags:{},achievements:[],honours:[],prontuario:[],history:[],
     queue:[],pending:[],ctx:{}, lastTable:null, contComp:null, mundialito:false, prev:null,
-    exClubs:[], renta:0, maxPow:L(lid).pow, seen:{}
+    exClubs:[], renta:0, maxPow:L(lid).pow, seen:{}, fav:cfg.fav||null, pasos:0, canjes:{}
   };
   st.carreteMax=st.carrete;
   st.salary=salaryFor(st,club,lid);
@@ -682,7 +832,7 @@ function newState(cfg){
 function playerRating(s){
   s=s||S;
   const k=POSITIONS[s.pos].key;
-  const tech=(s[k[0]]*1.5+s[k[1]]*1.2+s.pase+s.regate+s.ritmo+s.resistencia+s.def)/7.7;
+  const tech=(s[k[0]]*1.5+s[k[1]]*1.2+s.pase+s.regate+s.ritmo+s.resistencia+s.def+(s.marca??s.def))/8.7;
   const ment=(s.responsabilidad+s.disciplina+s.liderazgo)/3;
   let r=tech*.74+ment*.26+(s.forma-50)*.22-(s.lesionado?7:0)+((s.picardia||50)-50)*.05;
   if(s.carrete>45)r-=(s.carrete-45)*.08;
@@ -1514,7 +1664,7 @@ EVENTS.push(
  {label:"Hablar de la hinchada y del barrio",d:{hinchada:8,prestigio:2},res:"Hablaste de tu villa y de la gente. La barra te sacó un lienzo esa misma semana."},
  {label:"Retar al panelista a un penal en vivo",d:{carrete:4,hinchada:5},res:"El panelista te atajó el penal. Todo Chile se rió de ti, y tú también."}]},
 
-{id:"var",minAge:18,weight:1.8,dom:"cancha",title:"El VAR te cagó",
+{id:"var",minAge:18,weight:1.8,cond:s=>s.pos!=='arquero',dom:"cancha",title:"El VAR te cagó",
  text:"Metiste el gol del empate en el 92, lo gritaste con la barra... y el VAR lo anuló por un fuera de juego de medio pelo de la axila.",
  flavor:"El estadio entero puteando al monitor.",
  options:[
@@ -1639,35 +1789,35 @@ EVENTS.push(
 {id:"mg_penal",mg:"bar",skill:"def",weight:2.1,cond:s=>s.pos!=='arquero',dom:"minijuego",
  when:s=>`Minuto 90, ${estadio(s.club)}`,title:"Penal en el último minuto",
  text:"Penal a favor en el 90 y el estadio entero te mira. El arquero rival te habla pa' ponerte nervioso.",
- flavor:"Si la metís, ídolo. Si no, meme.",ins:"Toca cuando la pelota pase por la zona blanca",icon:"⚽",
+ flavor:"Si la metís, ídolo. Si no, meme.",ins:"Toca cuando la pelota pase por la zona amarilla",icon:"⚽",
  win:s=>{s.goles+=1;s.hinchada+=8;s.prestigio+=4;s.forma+=8;return {hl:"¡Frío como hielo!",t:"La cruzaste al ángulo y el arquero ni se movió. El estadio se vino abajo."};},
  lose:s=>{s.hinchada-=8;s.forma-=10;return {t:"Le pegaste como el pico y el arquero la sacó con el pie. Silencio en la galería.",bad:true};}},
 
 {id:"mg_gambeta",mg:"bar",skill:"regate",weight:2.1,cond:s=>s.pos!=='arquero',dom:"minijuego",title:"Mano a mano",
  text:"Quedaste mano a mano con el último defensor. Es un central grandote que ya te pegó dos patadas.",
- flavor:"Un amague y es gol.",ins:"Toca en la zona blanca pa' dejarlo sentado",icon:"⚽",
+ flavor:"Un amague y es gol.",ins:"Toca en la zona amarilla pa' dejarlo sentado",icon:"⚽",
  win:s=>{s.goles+=1;if(ch(.4))s.asistencias+=1;s.hinchada+=9;s.prestigio+=5;s.forma+=8;return "¡Lo dejaste sentado y definiste como los grandes!";},
  lose:s=>{s.hinchada-=6;s.forma-=8;return {t:"Se te fue larga y el central se la llevó caminando.",bad:true};}},
 
 {id:"mg_tirolibre",mg:"bar",skill:"pase",weight:1.9,minAge:17,cond:s=>s.pos!=='arquero',dom:"minijuego",title:"Tiro libre al borde del área",
  text:"Falta en la medialuna, minuto 88, van empatando. Te paraste frente a la pelota y nadie se atrevió a quitártela.",
- flavor:"La barrera salta y el arquero se mueve pa' todos lados.",ins:"Toca en la zona blanca pa' colgarla del ángulo",icon:"⚽",
+ flavor:"La barrera salta y el arquero se mueve pa' todos lados.",ins:"Toca en la zona amarilla pa' colgarla del ángulo",icon:"⚽",
  win:s=>{s.goles+=1;s.hinchada+=11;s.prestigio+=7;s.forma+=9;return {hl:"¡La colgó del ángulo!",t:"Golazo de tiro libre. Lo van a repetir toda la semana en todos los canales."};},
  lose:s=>{s.hinchada-=5;s.forma-=6;return {t:"Le pegaste a la barrera. La galería suspiró nomás.",bad:true};}},
 
 {id:"mg_chilena",mg:"bar",skill:"regate",narrow:.62,weight:1.2,minAge:18,cond:s=>s.pos!=='arquero',dom:"minijuego",title:"¡La chilena!",
  text:"Centro pasado, la pelota queda arriba y tú de espaldas al arco. Es ahora o nunca: la jugada que se inventó en este país.",
- flavor:"Si sale, te la van a mostrar en el extranjero.",ins:"Toca justo en la zona blanca pa' pegarle en el aire",icon:"🦶",
+ flavor:"Si sale, te la van a mostrar en el extranjero.",ins:"Toca justo en la zona amarilla pa' pegarle en el aire",icon:"🦶",
  win:s=>{s.goles+=1;s.hinchada+=14;s.prestigio+=9;s.forma+=10;hito("Hizo un gol de chilena");return {hl:"¡Golazo de chilena!",t:"Te elevaste, le pegaste en el aire y la pelota se clavó en el ángulo. Hasta el arquero rival aplaudió."};},
  lose:s=>{s.hinchada-=3;s.forma-=5;return {t:"Le pegaste al aire y caíste de espalda. Dolió el orgullo y la columna.",bad:true};}},
 
 {id:"mg_cabezazo",mg:"bar",skill:"resistencia",weight:1.8,minAge:17,cond:s=>s.pos!=='arquero',dom:"minijuego",title:"Córner en el último minuto",
  text:"Córner en el 93 y subiste hasta el área rival. Todos saltando, codazos por todos lados.",
- flavor:"Hay que saltar en el momento justo.",ins:"Toca en la zona blanca pa' cabecear justo",icon:"⚽",
+ flavor:"Hay que saltar en el momento justo.",ins:"Toca en la zona amarilla pa' cabecear justo",icon:"⚽",
  win:s=>{s.goles+=1;s.hinchada+=10;s.prestigio+=6;s.forma+=8;return {hl:"¡Cabezazo en el 93!",t:"Le ganaste a todos por arriba y la metiste al segundo palo. Locura total."};},
  lose:s=>{s.hinchada-=5;s.forma-=6;return {t:"Saltaste antes de tiempo y la peinaste pa' afuera.",bad:true};}},
 
-{id:"mg_sprint",mg:"mash",skill:"ritmo",weight:1.9,dom:"minijuego",title:"Contragolpe a toda velocidad",
+{id:"mg_sprint",cond:s=>s.pos!=='arquero',mg:"mash",skill:"ritmo",weight:1.9,dom:"minijuego",title:"Contragolpe a toda velocidad",
  text:"Recuperaron en el área propia y salen de contra. Tenís sesenta metros por delante y un defensa pisándote los talones.",
  flavor:"Los pulmones ardiendo y el estadio de pie.",ins:"¡Toca lo más rápido que podái!",
  win:s=>{if(ch(.6))s.goles+=1;else s.asistencias+=1;s.hinchada+=9;s.prestigio+=5;s.forma+=8;return "Le sacaste cinco metros al defensa y resolviste perfecto.";},
@@ -1691,9 +1841,9 @@ EVENTS.push(
  win:s=>{s.hinchada+=6;s.forma+=5;s.regate+=1;return "Saltaste la patada como gato y el carnicero se fue de largo contra el banderín. La galería se burló de él todo el partido.";},
  lose:s=>{s.forma-=8;if(ch(s.items.kine?.2:.35))s.lesionado=1;return {t:"Te llegó el patadón de lleno. Terminaste el partido cojeando.",bad:true};}},
 
-{id:"mg_quite",mg:"bar",skill:"def",weight:2.1,cond:s=>s.pos==='defensa'||s.pos==='mediocampista',dom:"minijuego",title:"El último quite",
+{id:"mg_quite",mg:"bar",skill:"marca",weight:2.1,cond:s=>s.pos==='defensa'||s.pos==='mediocampista',dom:"minijuego",title:"El último quite",
  text:"El delantero rival te encaró y va derecho al arco. Minuto 90.",
- flavor:"Si le errái, es gol seguro.",ins:"Toca en la zona blanca pa' meter el quite limpio",icon:"⚽",
+ flavor:"Si le errái, es gol seguro.",ins:"Toca en la zona amarilla pa' meter el quite limpio",icon:"⚽",
  win:s=>{s.hinchada+=10;s.prestigio+=6;s.liderazgo+=3;s.forma+=8;return "¡Quite limpísimo! La galería lo gritó como gol.";},
  lose:s=>{s.hinchada-=7;s.disciplina-=4;s.forma-=8;return {t:"Llegaste tarde y lo bajaste. Tarjeta y tiro libre en contra.",bad:true};}},
 
@@ -1712,7 +1862,7 @@ EVENTS.push(
 {id:"mg_cueca",mg:"tanda",skill:"ritmo",rounds:4,needed:3,slots:["fin"],weight:1.2,dom:"barrio",when:"Septiembre, la fonda",title:"Pie de cueca en la fonda",
  enter:s=>{s.mes='septiembre';},
  text:"Es 18 y una señora te saca a bailar cueca frente a las cámaras del noticiero. Pañuelo en mano, la guitarra parte y todo el mundo mirando.",
- flavor:"Zapateo, vuelta, remolino.",ins:"Toca en la zona blanca siguiendo el pañuelo (3 de 4)",icon:"🧣",
+ flavor:"Zapateo, vuelta, remolino.",ins:"Toca en la zona amarilla siguiendo el pañuelo (3 de 4)",icon:"🧣",
  win:s=>{s.hinchada+=8;s.carrete+=3;return {hl:"¡El huaso del 18!",t:"Zapateaste como campeón nacional de cueca. El noticiero repitió tu pie tres veces."};},
  lose:s=>{s.hinchada+=2;s.carrete+=2;return {t:"Bailaste como pato mareado y pisaste a la señora, pero la gente te encontró simpático igual."};}},
 
@@ -2171,7 +2321,7 @@ EVENTS.push(
  win:s=>{s.goles+=1;s.hinchada+=10;s.prestigio+=6;s.forma+=8;return {hl:"¡Bombazo!",t:`Le pegaste con el alma y la pelota entró en el ángulo, todavía subiendo. ${celebra()}`};},
  lose:s=>{s.hinchada-=3;s.forma-=5;return {t:"Le pegaste con tanta fuerza que la pelota terminó en la calle. Un niño la devolvió diez minutos después.",bad:true};}},
 
-{id:"mg_saque",mg:"potencia",skill:"resistencia",cond:s=>s.pos==='arquero',weight:2.2,dom:"minijuego",title:"Saque largo pa' la contra",
+{id:"mg_saque",mg:"potencia",skill:"pase",cond:s=>s.pos==='arquero',weight:2.2,dom:"minijuego",title:"Saque largo pa' la contra",
  text:"Atrapaste un centro y ves a tu nueve solo en la mitad de la cancha. Un saque largo y preciso, y es gol.",
  flavor:"Los arqueros modernos también dan asistencias.",ins:"Mantén apretado y suelta en la zona verde",
  win:s=>{s.asistencias+=1;s.hinchada+=8;s.prestigio+=4;return "Saque de 70 metros al pie del nueve, que la cruzó al segundo palo. Asistencia del arquero: el estadio no lo podía creer.";},
@@ -2244,7 +2394,7 @@ EVENTS.push(
 
 {id:"mg_tacataca",mg:"tanda",skill:"ritmo",rounds:4,needed:3,weight:1.1,dom:"camarin",when:"Noche, en la concentración",title:"Final de taca-taca",
  text:"En la concentración hay taca-taca y el campeonato del plantel llegó a la final: tú contra el preparador físico, que juega como si fuera profesional.",
- flavor:"Prohibido girar las barras.",ins:"Toca en la zona blanca pa' rematar (3 de 4)",icon:"⚽",
+ flavor:"Prohibido girar las barras.",ins:"Toca en la zona amarilla pa' rematar (3 de 4)",icon:"⚽",
  win:s=>{s.liderazgo+=2;s.hinchada+=2;return "Le ganaste la final con un tapadón de muñeca. El preparador físico pidió revancha pa' toda la temporada.";},
  lose:s=>{s.resistencia+=1;return {t:"Perdiste la final y la apuesta: diez piques extra en el entrenamiento del día siguiente."};}},
 
@@ -2525,7 +2675,7 @@ EVENTS.push(
  {label:"Tirarte al barro en cada pelota",d:{hinchada:6,forma:-2},risk:"te podís lesionar",fx:s=>{if(ch(.2)){s.lesionado=1;return {t:"Te barriste en el barro y te doblaste el tobillo.",bad:true};}return "Terminaste irreconocible de barro. La galería te aplaudió de pie.";}},
  {label:"Guardarte pa' la próxima fecha",d:{disciplina:1},res:"Jugaste sin arriesgar nada. Cero y cero, y todos a la ducha caliente."}]},
 
-{id:"var",weight:1.3,dom:"cancha",title:"El VAR te anuló el gol",
+{id:"var",weight:1.3,cond:s=>s.pos!=='arquero',dom:"cancha",title:"El VAR te anuló el gol",
  text:"Metiste un golazo en el minuto 80 y ya lo estabas celebrando cuando el árbitro se tocó la oreja. Cuatro minutos de revisión después: fuera de juego por un hombro.",
  flavor:"Las líneas del VAR se ven más torcidas que nunca.",
  options:[
@@ -2605,8 +2755,8 @@ EVENTS.push(
  text:s=>`Jugaste poco la temporada pasada y el club te propone irte a préstamo un año pa' sumar minutos. Hay dos opciones: ${s.ctx.a}, de Primera, o ${s.ctx.b}, de la Primera B.`,
  flavor:"El club te sigue pagando el sueldo. Tú solo tenís que jugar.",
  options:[
- {label:s=>`Irte a préstamo a ${s.ctx.a}`,d:{forma:4},fx:s=>{s.flags.prestamo={club:s.club,lid:s.league};const d=s.ctx.a;s.exClubs.includes(s.club)||s.exClubs.push(s.club);s.club=d;s.league=CLUB_LEAGUE[d];hito(`Se fue a préstamo a ${d}`);return `Te fuiste a préstamo a ${d}. Vai a ser titular y a jugar contra los grandes.`;}},
- {label:s=>`Irte a préstamo a ${s.ctx.b}`,d:{forma:5,liderazgo:2},fx:s=>{s.flags.prestamo={club:s.club,lid:s.league};const d=s.ctx.b;s.exClubs.includes(s.club)||s.exClubs.push(s.club);s.club=d;s.league=CLUB_LEAGUE[d];hito(`Se fue a préstamo a ${d}`);return `Te fuiste a préstamo a ${d}. En la B vai a ser figura y a jugar todos los partidos.`;}},
+ {label:s=>`Irte a préstamo a ${s.ctx.a}`,d:{forma:4},fx:s=>{s.flags.prestamo={club:s.club,lid:s.league};const d=s.ctx.a;cambiarDeClub(d,CLUB_LEAGUE[d],s.salary);hito(`Se fue a préstamo a ${d}`);return `Te fuiste a préstamo a ${d}. Vai a ser titular y a jugar contra los grandes. ${s.flags.msgHinchada||''}`;}},
+ {label:s=>`Irte a préstamo a ${s.ctx.b}`,d:{forma:5,liderazgo:2},fx:s=>{s.flags.prestamo={club:s.club,lid:s.league};const d=s.ctx.b;cambiarDeClub(d,CLUB_LEAGUE[d],s.salary);hito(`Se fue a préstamo a ${d}`);return `Te fuiste a préstamo a ${d}. En la B vai a ser figura y a jugar todos los partidos. ${s.flags.msgHinchada||''}`;}},
  {label:"Quedarte a pelear el puesto",d:{disciplina:3,forma:-2},res:"Te quedaste a pelearla. El técnico valoró la actitud, pero la banca sigue siendo larga."}]},
 
 {id:"once",minAge:16,weight:1,dom:"barrio",when:"Martes, en la casa de tu vieja",title:"La once con tu vieja",
@@ -3073,6 +3223,68 @@ EVENTS.push(
  {label:"Decir que todavía no es el momento",d:{disciplina:1},res:"Dijiste que el documental se hace cuando te retirís. La productora te dejó su tarjeta."}]}
 );
 
+
+/* =================== ARQUERO: eventos adaptados al puesto =================== 
+   map: mueve lo que un evento sube/baja a la stat de arquero que corresponde.
+   opts: reemplaza opciones que son de jugador de cancha. */
+const ARQ={
+ debut:{opts:{
+  1:{label:"Salir a cortar centros, a puro atrevimiento",risk:"45% que salga bien",
+   fx:s=>ch(.45)?(s.hinchada+=12,s.prestigio+=6,s.forma+=12,s.def+=1,{hl:"¡Debut soñado!",t:"Saliste a cortar el primer centro con las dos manos y en el segundo tiempo le tapaste un mano a mano al nueve. Tu mamá lloró arriba del lienzo."})
+    :(s.hinchada-=6,s.forma-=8,{t:"Saliste a un centro que no era tuyo, no la tocaste y fue gol. En el entretiempo el profe te dijo: «pa' la otra, más cabeza, cabro».",bad:true})},
+  2:{label:"Ordenar a la defensa a puro grito",d:{regate:3,disciplina:4,agresividad:2,forma:3},
+   res:"No paraste de hablarles a los centrales en todo el partido. El profe anotó tu nombre con lápiz rojo, del bueno."}}},
+ pretemporada:{opts:{1:{label:"Técnica: saques y pelotas aéreas",d:{pase:4,marca:4,forma:4},
+   res:"Horas extra de saques largos y centros con el preparador de arqueros. Se nota en las manos y en el pie."}}},
+ quiltro:{map:{regate:'pase'}},
+ pichanga:{map:{regate:'def'}},
+ villa:{map:{regate:'def'}},
+ refuerzo:{map:{regate:'marca'}},
+ tecniconuevo:{map:{pase:'regate'}},
+ altura:{map:{pase:'regate'},opts:{1:{label:"Dosificarte y jugar con la ubicación",
+   res:"Te paraste bien, sacaste con calma y no saliste a buscar de más. Sacaron un empate que vale oro."}}},
+ cuerpo:{map:{pase:'regate'},opts:{0:{label:"Bajar la carga y jugar más con la ubicación",
+   res:"Ahora te tirái menos y te parái mejor. Llegái a las mismas pelotas gastando la mitad."}}},
+ lluvia:{opts:{0:{label:"Sacar largo, con pelotazos",d:{pase:1,agresividad:1},
+   res:"Sacaste largo todo el partido y en una de esas el nueve la peinó en el barro. Ganaron 1 a 0."}}},
+ hacertiempo:{opts:{
+  1:{label:"Demorar cada saque de arco",d:{pase:1},risk:"depende de tu PIC",
+   fx:s=>ch(clamp(.35+(s.picardia-50)/100,.2,.8))?(s.hinchada+=6,{t:"Te amarraste los chuteadores, acomodaste la pelota tres veces y sacaste en el último segundo. Pitazo final."})
+    :(s.forma-=5,{t:"El árbitro te amonestó por hacer tiempo y dio seis minutos de descuento. Les empataron en el último.",bad:true})},
+  2:{label:"Ordenar a todos atrás y aguantar",d:{regate:1,liderazgo:1},risk:"a todo o nada",
+   fx:s=>ch(.6)?(s.hinchada+=6,{t:"Gritaste hasta quedar afónico y la defensa no dejó pasar ni el aire. Ganaron con el corazón en la mano."})
+    :(s.hinchada-=4,s.forma-=4,{t:"Se metieron todos al área chica, hubo un rebote que nadie despejó y les empataron en el 94.",bad:true})}}}
+};
+/* minijuegos que el arquero juega con otra stat */
+const ARQ_SKILL={mg_jueguitos_playa:'pase',mg_jueguitos_tiktok:'pase',mg_escapada:'ritmo'};
+const esArquero=()=>S&&S.pos==='arquero';
+function arqOptions(ev,opts){
+  if(!esArquero()||!ARQ[ev.id])return opts;
+  const A=ARQ[ev.id];
+  return opts.map((o,i)=>{let n=Object.assign({},o,(A.opts&&A.opts[i])||{});
+    if(A.map&&n.d){const d={};for(const k in n.d){const t=A.map[k]||k;d[t]=(d[t]||0)+n.d[k];}n=Object.assign({},n,{d});}
+    return n;});
+}
+/* cambios hechos dentro de efectos especiales: se pasan a la stat correcta */
+function arqMover(ev,b){
+  if(!esArquero()||!ARQ[ev.id]||!ARQ[ev.id].map)return;
+  const m=ARQ[ev.id].map;for(const k in m){const d=S[k]-b[k];if(d){S[k]-=d;S[m[k]]+=d;}}
+}
+/* el arquero no hace goles en los eventos: se transforman en penales atajados */
+function arqGoles(b,out){
+  if(!esArquero())return;
+  const d=S.goles-b.goles;if(d>0){S.goles=b.goles;S.atajadas=(S.atajadas||0)+d;}
+  if(out){if(out.t)out.t=arqTxt(out.t);if(out.hl)out.hl=arqTxt(out.hl);}
+}
+function arqTxt(t){
+  if(!esArquero()||typeof t!=='string')return t;
+  return t.replace(/Prometerle un gol en su cara/g,'Prometerle que no te hace ni un gol')
+    .replace(/Prometer un gol y cumplirlo/g,'Prometer una atajada heroica y cumplirla')
+    .replace(/No metiste gol/g,'No te tocó ninguna atajada de las grandes')
+    .replace(/Le metiste el gol/g,'Le atajaste un penal')
+    .replace(/([Mm])etiste (el |un )?gol\b/g,(x,m)=>m==='M'?'Atajaste un penal':'atajaste un penal');
+}
+
 /* =================== RENDER =================== */
 const V=x=>typeof x==='function'?x(S):x;
 const app=()=>document.getElementById('app');
@@ -3081,6 +3293,7 @@ function onCleanup(f){cleanups.push(f);}
 function render(n){
   const old=cleanups;cleanups=[];
   old.forEach(f=>{try{f();}catch(e){}});
+  const sh=document.getElementById('statsSheet');if(sh)sh.remove();
   const a=app();a.innerHTML='';a.appendChild(n);
   try{window.scrollTo(0,0);}catch(e){}
   if(typeof n.__mount==='function'){const f=n.__mount;n.__mount=null;f();}
@@ -3091,6 +3304,8 @@ function screen(html,withHud){
   if(withHud){
     const h=c.querySelector('#tbHome'),st=c.querySelector('#tbStats');
     if(h)h.onclick=goHome; if(st)st.onclick=openStats;
+    const am=c.querySelector('#tbAmor'),rd=c.querySelector('#tbRedes');
+    if(am)am.onclick=()=>openTab('amor'); if(rd)rd.onclick=()=>openTab('redes');
   }
   return c;
 }
@@ -3128,10 +3343,10 @@ const crestHTML=(club,size)=>insignia(club,size);
 /* =================== HUD: la lámina =================== */
 const ATTR_LAB={ritmo:'RIT',resistencia:'RES',regate:'REG',pase:'PAS',agresividad:'AGR',responsabilidad:'RSP',liderazgo:'LID',
   disciplina:'DIS',picardia:'PIC',prestigio:'Prestigio',hinchada:'Hinchada',forma:'Forma',carrete:'Carrete'};
-const attrLabel=k=>k==='def'?POSITIONS[S.pos].ab:(ATTR_LAB[k]||k);
+const attrLabel=k=>TECH_LAB[tipoPos()][k]||ATTR_LAB[k]||k;
 function hudHTML(){
   const k=POSITIONS[S.pos].key;
-  const tech=['ritmo','resistencia','regate','pase','def'], men=['agresividad','responsabilidad','liderazgo','disciplina','picardia'];
+  const tech=TECH_ORDER[tipoPos()], men=['agresividad','responsabilidad','liderazgo','disciplina','picardia'];
   const items=Object.keys(S.items).filter(i=>S.items[i]>0),am=amorChip();
   const meter=(lab,v,cls)=>`<div><div class="mt"><span>${lab}</span><b>${Math.round(v)}</b></div><div class="bar"><i class="${cls}" style="width:${clamp(v,0,100)}%"></i></div></div>`;
   const chips=[S.lesionado?'<span>🤕 Lesionado</span>':'',S.apodo?`<span>🏷️ «${esc(S.apodo)}»</span>`:'',am?`<span class="amor">${esc(am)}</span>`:'',
@@ -3140,8 +3355,8 @@ function hudHTML(){
    <div class="hud-id">${insignia(S.club,36)}
     <div class="who"><b>${esc(S.club)}</b><span>${lname(S.league)} de ${cname(S.league)}, ${cap(S.mes||'enero')} ${S.year}</span></div>
     <div class="age"><b>${S.age}</b><span>años</span></div></div>
-   <div class="meters">${meter('Prestigio',S.prestigio,'b-pre')}${meter('Hinchada',S.hinchada,'b-hin')}${meter('Forma',S.forma,'b-for')}${meter('Carrete',S.carrete,'b-car')}</div>
-   <div class="attrs">${tech.map(a=>`<div class="at ${k.includes(a)?'key':''}"><small>${attrLabel(a)}</small><b>${S[a]}</b></div>`).join('')}<i aria-hidden="true"></i>${men.map(a=>`<div class="at men ${a==='picardia'?'pic':''}"><small>${attrLabel(a)}</small><b>${S[a]}</b></div>`).join('')}</div>
+   <div class="meters">${meter('Prestigio',S.prestigio,'b-pre')}${S.hinchada<0?`<div class="odio"><div class="mt"><span>Hinchada</span><b>${Math.round(S.hinchada)}</b></div><div class="bar"><i class="b-odio" style="width:${clamp(-S.hinchada,0,100)}%"></i></div></div>`:meter('Hinchada',S.hinchada,'b-hin')}${meter('Forma',S.forma,'b-for')}${meter('Carrete',S.carrete,'b-car')}</div>
+   <div class="attrs tech">${tech.map(a=>`<div class="at ${k.includes(a)?'key':''}"><small>${attrLabel(a)}</small><b>${S[a]}</b></div>`).join('')}</div><div class="attrs mens">${men.map(a=>`<div class="at men ${a==='picardia'?'pic':''}"><small>${attrLabel(a)}</small><b>${S[a]}</b></div>`).join('')}</div>
    <div class="hud-foot"><span>Media <b>${Math.round(playerRating())}</b></span><span>⚽ <b>${S.goles}</b>&nbsp; 🅰️ <b>${S.asistencias}</b>&nbsp; 🏆 <b>${S.titulos}</b></span></div>
    <div class="hud-foot money"><span>💰 <b>${pesos(S.plata)}</b></span><span>📱 <b>${miles(S.seguidores)}</b> seguidores</span></div>
    ${chips.length?`<div class="hud-items">${chips.join('')}</div>`:''}
@@ -3161,9 +3376,9 @@ function chipsFor(o){
   if(o.risk)out.push(`<span class="chip risk">🎲 ${o.risk}</span>`);
   return out.length?`<span class="chips">${out.join('')}</span>`:'';
 }
-const SNAP=['ritmo','resistencia','regate','pase','def','agresividad','responsabilidad','liderazgo','disciplina','picardia',
+const SNAP=['ritmo','resistencia','regate','pase','def','marca','agresividad','responsabilidad','liderazgo','disciplina','picardia',
   'prestigio','hinchada','forma','carrete','plata','goles','asistencias','titulos','seguidores'];
-function snap(){const o={};SNAP.forEach(k=>o[k]=S[k]);o.quimica=S.amor.quimica;o.pareja=S.amor.pareja?S.amor.pareja.n:null;o.estado=S.amor.estado;o.les=S.lesionado;return o;}
+function snap(){const o={};SNAP.forEach(k=>o[k]=S[k]);o.atajadas=S.atajadas||0;o.quimica=S.amor.quimica;o.pareja=S.amor.pareja?S.amor.pareja.n:null;o.estado=S.amor.estado;o.les=S.lesionado;return o;}
 function diffHTML(b){
   const out=[];
   SNAP.forEach(k=>{
@@ -3176,6 +3391,7 @@ function diffHTML(b){
     if(k==='titulos')return out.push(`<span class="chip pos">+${r} ${r===1?'título':'títulos'}</span>`);
     out.push(`<span class="chip ${k==='carrete'?'car':(r>0?'pos':'neg')}">${r>0?'+':'−'}${Math.abs(r)} ${attrLabel(k)}</span>`);
   });
+  const at=(S.atajadas||0)-(b.atajadas||0);if(at>0)out.push(`<span class="chip pos">+${at} ${at===1?'penal atajado':'penales atajados'}</span>`);
   const pn=S.amor.pareja?S.amor.pareja.n:null;
   if(pn&&pn===b.pareja){const q=Math.round(S.amor.quimica-b.quimica);if(q)out.push(`<span class="chip amor">${q>0?'+':'−'}${Math.abs(q)} Química</span>`);
     const EST={conviviendo:'🏠 Viviendo juntos',comprometido:'💍 Comprometidos',casado:'💒 Casados'};
@@ -3185,8 +3401,9 @@ function diffHTML(b){
   return out.length?`<div class="diff"><div class="lbl">Lo que cambió</div><div class="chips">${out.join('')}</div></div>`:'';
 }
 function clampAll(){
-  ['ritmo','resistencia','regate','pase','def','agresividad','responsabilidad','liderazgo','disciplina','picardia'].forEach(k=>S[k]=clamp(Math.round(S[k]),1,99));
-  ['prestigio','hinchada','forma','carrete'].forEach(k=>S[k]=clamp(Math.round(S[k]),0,100));
+  ['ritmo','resistencia','regate','pase','def','marca','agresividad','responsabilidad','liderazgo','disciplina','picardia'].forEach(k=>S[k]=clamp(Math.round(S[k]),1,99));
+  ['prestigio','forma','carrete'].forEach(k=>S[k]=clamp(Math.round(S[k]),0,100));
+  S.hinchada=clamp(Math.round(S.hinchada),HINCHA_MIN,100);
   S.plata=Math.max(0,Math.round(S.plata*1000)/1000);
   S.seguidores=Math.max(0,Math.round(S.seguidores));
   S.amor.quimica=clamp(Math.round(S.amor.quimica),0,100);
@@ -3216,6 +3433,7 @@ function startSeason(){
   S.queue.push('liga','balance','tienda','fichajes');
 }
 function nextStep(){
+  S.pasos=(S.pasos||0)+1;
   if(S.alive&&!S.retired)saveGame();
   if(!S.alive)return render(screenDeath(S.deathMsg||'Tu historia terminó antes de tiempo.'));
   if(S.retired)return render(screenEnd());
@@ -3308,16 +3526,16 @@ const DOM_LABEL={cancha:'Cancha',camarin:'Camarín',carrete:'Carrete',cahuin:'Ca
 function evHeader(ev){
   const when=V(ev.when)||`${cap(S.mes)} de ${S.year}`;
   return `<div class="ev-top"><span class="when">${esc(when)}</span><span class="dom">${DOM_LABEL[ev.dom]||'Cancha'}</span></div>
-    <h2>${V(ev.title)}</h2><p class="txt">${V(ev.text)}</p>${ev.flavor?`<p class="flav">${V(ev.flavor)}</p>`:''}`;
+    <h2>${arqTxt(V(ev.title))}</h2><p class="txt">${arqTxt(V(ev.text))}</p>${ev.flavor?`<p class="flav">${V(ev.flavor)}</p>`:''}`;
 }
 function screenEvent(ev){
   const all=typeof ev.options==='function'?ev.options(S):ev.options;
-  const opts=all.filter(o=>!o.show||o.show(S));
+  const opts=arqOptions(ev,all.filter(o=>!o.show||o.show(S)));
   const falta=o=>{const m=o.money?V(o.money):0;return m<0&&-m>S.plata+.0005?-m-S.plata:0;};   // solo las compras; las multas se pagan igual
   const todas=opts.every(o=>falta(o)>0);                       // por si acaso: nunca dejar el evento sin salida
   const c=screen(`<article class="ev d-${ev.dom||'cancha'}">${evHeader(ev)}
     <div class="opts">${opts.map((o,i)=>{const f=todas?0:falta(o);
-      return `<button class="opt" data-i="${i}" ${f?'disabled':''}>${V(o.label)}${o.sub?`<span class="sub">${V(o.sub)}</span>`:''}${f?`<span class="sub nope">No te alcanza: te faltan ${pesos(f)}</span>`:''}${chipsFor(o)}</button>`;}).join('')}</div></article>`,true);
+      return `<button class="opt" data-i="${i}" ${f?'disabled':''}>${arqTxt(V(o.label))}${o.sub?`<span class="sub">${V(o.sub)}</span>`:''}${f?`<span class="sub nope">No te alcanza: te faltan ${pesos(f)}</span>`:''}${chipsFor(o)}</button>`;}).join('')}</div></article>`,true);
   const go=once(c);
   c.querySelectorAll('.opt:not([disabled])').forEach(b=>b.onclick=go(()=>resolveOption(ev,opts[+b.dataset.i])));
   return c;
@@ -3334,6 +3552,7 @@ function resolveOption(ev,o){
   if(out==null||out==='')out=o.res||'Listo.';
   if(typeof out==='string')out={t:out};
   if(out.death){S.alive=false;S.deathMsg=out.t;return render(screenDeath(out.t));}
+  arqMover(ev,b);arqGoles(b,out);
   kineSalva(b,out);
   carretePicardia(b);
   if(ev.dom==='cahuin'&&S.items.cm)soften(b);
@@ -3363,6 +3582,7 @@ function mgFinish(ev,hit,extra){
   let out=(hit?ev.win:ev.lose)(S);
   if(out==null||out==='')out=hit?'¡Bien!':'No resultó.';
   if(typeof out==='string')out={t:out};
+  arqMover(ev,b);arqGoles(b,out);
   kineSalva(b,out);
   carretePicardia(b);
   clampAll();
@@ -3377,6 +3597,7 @@ function startGate(c,label,fn){
 }
 const START_BTN=`<button class="btn sm mgstart" id="mgStart">¡Partir!</button>`;
 function screenMinigame(ev){
+  if(esArquero()&&ARQ_SKILL[ev.id])ev=Object.assign({},ev,{skill:ARQ_SKILL[ev.id]});
   if(ev.mg==='tanda')return mgBar(ev,ev.rounds||3,ev.needed||2);
   if(ev.mg==='mash')return mgMash(ev);
   if(ev.mg==='palo')return mgPalo(ev);
@@ -3392,9 +3613,15 @@ function screenMinigame(ev){
   return mgBar(ev,1,1);
 }
 const keyTap=f=>e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();f();}};
+/* feedback visual al tocar: destello + palabra que salta */
+function mgFlash(zone,ok,txt){
+  zone.classList.remove('flash-ok','flash-no');void zone.offsetWidth;zone.classList.add(ok?'flash-ok':'flash-no');
+  const p=document.createElement('span');p.className='mgpop';p.textContent=txt||(ok?'¡Bien!':'¡Uy!');zone.appendChild(p);
+  setTimeout(()=>p.remove(),650);
+}
 function mgBar(ev,rounds,needed){
   const c=mgShell(ev,`<div class="mgz" id="mgZone" role="button" tabindex="0" aria-label="Toca en el momento justo">
-     <div class="win" id="mgWin"></div><div class="ball" id="mgBall">${ev.icon||'⚽'}</div></div>
+     <div class="win" id="mgWin"></div><div class="ball" id="mgBall"><span>${ev.icon||'⚽'}</span></div></div>
      <div class="dots" id="mgDots">${Array.from({length:rounds},()=>'<i></i>').join('')}</div>`);
   const zone=c.querySelector('#mgZone'),ball=c.querySelector('#mgBall'),win=c.querySelector('#mgWin'),dots=c.querySelector('#mgDots');
   const sk=S[ev.skill||'regate'];
@@ -3407,6 +3634,7 @@ function mgBar(ev,rounds,needed){
   c.__mount=()=>{onCleanup(()=>{run=false;if(raf)cancelAnimationFrame(raf);});tick();};
   const hit=()=>{if(!run)return;
     const ok=pos>=st&&pos<=en;if(ok)hits++;
+    mgFlash(zone,ok,ok?pick(['¡Adentro!','¡Golazo!','¡Justo!']):pick(['¡Afuera!','¡Uy!','¡Nooo!']));
     const d=dots.children[done];if(d)d.className=ok?'hit':'miss';done++;
     if(done>=rounds){run=false;if(raf)cancelAnimationFrame(raf);mgFinish(ev,hits>=needed);}
     else{pos=rnd(4,90);dir=ch(.5)?1:-1;}};
@@ -3425,7 +3653,7 @@ function mgMash(ev){
   const tap=()=>{if(!run)return;
     if(!started){started=true;t0=Date.now();loop();
       fin=setTimeout(()=>{if(run){run=false;if(raf)cancelAnimationFrame(raf);mgFinish(ev,n>=target);}},dur);}
-    n++;cnt.textContent=`${n} / ${target}`;
+    n++;cnt.textContent=`${n} / ${target}`;zone.classList.add('bump');setTimeout(()=>zone.classList.remove('bump'),70);
     if(n>=target){run=false;if(fin)clearTimeout(fin);if(raf)cancelAnimationFrame(raf);mgFinish(ev,true);}};
   zone.onclick=tap;zone.onkeydown=keyTap(tap);
   return c;
@@ -3433,9 +3661,10 @@ function mgMash(ev){
 function mgPalo(ev){
   const lados=[{k:'i',t:'Tirarme a la izquierda'},{k:'c',t:'Quedarme al medio'},{k:'d',t:'Tirarme a la derecha'}];
   const ok=pick(lados).k,sk=S[ev.skill||'def'];
-  const c=mgShell(ev,`<div class="opts">${lados.map(l=>`<button class="opt" data-k="${l.k}">${l.t}</button>`).join('')}</div>`);
+  const IC={i:'⬅️',c:'🧤',d:'➡️'},NM={i:'Izquierda',c:'Al medio',d:'Derecha'};
+  const c=mgShell(ev,`<div class="goal"><div class="frame">${lados.map(l=>`<button data-k="${l.k}" aria-label="${l.t}"><span>${IC[l.k]}</span>${NM[l.k]}</button>`).join('')}</div></div>`);
   const go=once(c);
-  c.querySelectorAll('.opt').forEach(b=>b.onclick=go(()=>{
+  c.querySelectorAll('.goal button').forEach(b=>b.onclick=go(()=>{
     const acerto=b.dataset.k===ok;
     mgFinish(ev,acerto?ch(clamp(.5+sk*.006,.5,.93)):ch(.08+(S.picardia-50)/600));}));
   return c;
@@ -3573,7 +3802,7 @@ function mgCachipun(ev){
     if(busy||done)return;busy=true;rondas++;
     const mine=J.find(j=>j.k===b.dataset.k),his=Math.random()<.5?fav:pick(J.filter(j=>j!==fav));
     let res;if(mine.k===his.k)res='empate';else if(gana[mine.k]===his.k){yo++;res='¡ganaste la mano!';}else{el++;res='perdiste la mano';}
-    log.innerHTML=`Tú ${mine.e} contra ${his.e} de ${esc(corto)}: ${res}<br><b>Tú ${yo} · ${esc(corto)} ${el}</b>`;
+    log.innerHTML=`<span class="big">${mine.e} ⚡ ${his.e}</span>${res}<br><b>Tú ${yo} · ${esc(corto)} ${el}</b>`;
     if(yo>=2||el>=2||rondas>=9){done=true;tms.push(setTimeout(()=>mgFinish(ev,yo>el),450));return;}
     tms.push(setTimeout(()=>{busy=false;},220));});
   c.__mount=()=>onCleanup(()=>tms.forEach(clearTimeout));
@@ -3610,7 +3839,7 @@ function mgTrivia(ev){
 function mgJueguitos(ev){
   const sk=S[ev.skill||'regate'],target=ev.target||7;
   const c=mgShell(ev,`<div class="mgz" id="mgZone" role="button" tabindex="0" aria-label="Toca cuando la pelota pase por la zona">
-     <div class="win" id="mgWin"></div><div class="ball" id="mgBall">${ev.icon||'⚽'}</div></div>
+     <div class="win" id="mgWin"></div><div class="ball" id="mgBall"><span>${ev.icon||'⚽'}</span></div></div>
      <p class="mgscore" id="jN">0 toques · meta ${target}</p>`);
   const zone=c.querySelector('#mgZone'),ball=c.querySelector('#mgBall'),win=c.querySelector('#mgWin'),cnt=c.querySelector('#jN');
   const w=clamp(17+(sk-50)*.08+(S.picardia-50)*.02+(S.items.psico?2.5:0),11,25),st=50-w/2,en=50+w/2;
@@ -3620,8 +3849,8 @@ function mgJueguitos(ev){
   function tick(){if(!run)return;pos+=dir*sp;if(pos>=96){pos=96;dir=-1;}if(pos<=4){pos=4;dir=1;}ball.style.left=pos+'%';raf=requestAnimationFrame(tick);}
   c.__mount=()=>{onCleanup(()=>{run=false;if(raf)cancelAnimationFrame(raf);});tick();};
   const hit=()=>{if(!run)return;
-    if(!(pos>=st&&pos<=en)){run=false;if(raf)cancelAnimationFrame(raf);cnt.textContent=`Se cayó en el toque ${n+1}`;mgFinish(ev,n>=target);return;}
-    n++;cnt.textContent=`${n} toques · meta ${target}`;sp=Math.min(sp*1.1,3.2);
+    if(!(pos>=st&&pos<=en)){mgFlash(zone,false,'¡Se cayó!');run=false;if(raf)cancelAnimationFrame(raf);cnt.textContent=`Se cayó en el toque ${n+1}`;mgFinish(ev,n>=target);return;}
+    n++;mgFlash(zone,true,String(n));cnt.textContent=`${n} toques · meta ${target}`;sp=Math.min(sp*1.1,3.2);
     if(n>=target){run=false;if(raf)cancelAnimationFrame(raf);cnt.textContent=`¡${n} toques!`;mgFinish(ev,true);return;}
     if(ch(.5)){pos=rnd(4,14);dir=1;}else{pos=rnd(86,96);dir=-1;}};
   zone.onclick=hit;zone.onkeydown=keyTap(hit);
@@ -3670,12 +3899,39 @@ function leagueTeams(lid){
   if(t.includes(S.club)||lid!==S.league)return t;
   return t.slice(0,-1).concat([S.club]);   // tu club subió o bajó: entra en la tabla
 }
+
+/* =================== EL EQUIPO DEL ALMA =================== */
+const FAV_BONUS=7;
+function favTemporada(rowsMiLiga){
+  const f=S.fav;if(!f)return null;
+  if(f===S.club)return null;                    // si juegas ahí, ya lo viste en la tabla
+  let lid=CLUB_LEAGUE[f],pos,n;
+  if(rowsMiLiga.some(r=>r.name===f)){lid=S.league;n=rowsMiLiga.length;pos=rowsMiLiga.findIndex(r=>r.name===f)+1;}
+  else{
+    if(!lid||!L(lid))return null;
+    const t=L(lid).teams.filter(x=>x!==S.club);
+    const rows=t.map(x=>({name:x,b:clubStrength(x,lid)+rnd(-8,8)+(x===f?FAV_BONUS:0)})).sort((a,b)=>b.b-a.b);
+    n=rows.length;pos=rows.findIndex(r=>r.name===f)+1;
+  }
+  const lg=L(lid),camp=pos===1,baja=!!lg.down&&pos>n-2,sube=!!lg.up&&pos===1;
+  if(camp){S.forma+=4;S.carrete+=2;hito(`Vio a ${f}, su club del alma, salir campeón (${S.year})`);}
+  else if(baja)S.forma-=3;
+  return {club:f,pos,n,lid,camp,baja,sube};
+}
+function favHTML(fv){
+  if(!fv)return '';
+  const lg=L(fv.lid);
+  if(fv.camp)return `<p class="flav">❤️ ¡${esc(fv.club)} salió campeón de la ${lg.n}! Lo celebraste en la plaza con la camiseta de cuando erai cabro chico.</p>`;
+  if(fv.baja)return `<p class="flav">💔 ${esc(fv.club)}, tu club del alma, se fue al descenso. Te dolió más que cualquier derrota tuya.</p>`;
+  return `<p class="flav">❤️ Tu ${esc(fv.club)} terminó ${fv.pos}º de ${fv.n} en la ${lg.n}.</p>`;
+}
+
 function simulateSeason(){
   const lg=L(S.league),teams=leagueTeams(S.league),rating=playerRating(),lesion=S.lesionado>0;
   S.maxPow=Math.max(S.maxPow,lg.pow);
   /* tu peso en el equipo depende de tu nivel contra el del plantel: un cabro de la banca no hunde a un grande */
   const myStr=clubStrength(S.club,S.league),rol=rating-myStr,inf=rol>=-4?clamp((rol+4)*.4,0,7):0;
-  const rows=teams.map(t=>{const g3=tier(t)===3;let b=clubStrength(t,S.league)+rnd(g3?-7:-8,g3?7:8);if(t===S.club)b+=inf;return {name:t,b};});
+  const rows=teams.map(t=>{const g3=tier(t)===3;let b=clubStrength(t,S.league)+rnd(g3?-7:-8,g3?7:8);if(t===S.club)b+=inf;if(t===S.fav)b+=FAV_BONUS;return {name:t,b};});
   rows.sort((a,b)=>b.b-a.b);
   const n=rows.length,pj=(n-1)*2;
   rows.forEach(r=>r.pts=clamp(Math.round(20+(r.b-(lg.pow-20))*1.05),8,pj*3-6));
@@ -3731,8 +3987,9 @@ function simulateSeason(){
   const gAnio=S.golIni!=null?Math.max(g,S.goles-S.golIni):g,aAnio=S.asiIni!=null?Math.max(a,S.asistencias-S.asiIni):a;
   g=gAnio;a=aAnio;
   S.history.push({y:S.year,club:S.club,lg:S.league,pos,g,a,jug});
+  const fav=favTemporada(rows);
   S.histMedia.push({y:S.year,m:Math.round(rating)});
-  return {pos,total:n,pj,campeon,asciende,desciende,goleador,liguilla,g,a,jug,rating:Math.round(rating),penales,lesion};
+  return {pos,total:n,pj,campeon,asciende,desciende,goleador,liguilla,g,a,jug,rating:Math.round(rating),penales,lesion,fav};
 }
 function tablaRows(t,me){
   const keep=new Set();t.forEach(x=>{if(x.pos<=4||x.pos>t.length-2||Math.abs(x.pos-me)<=2)keep.add(x.pos);});
@@ -3755,8 +4012,9 @@ function screenLiga(r){
   const c=screen(`${hl?`<div class="tab"><div class="mast"><b>EL CAHUÍN</b><span>${rnd(1,15)} de diciembre de ${S.year}</span></div><h2>${esc(hl)}</h2><p class="bajada">La vuelta olímpica de ${quienSoy()} y compañía.</p></div>`:''}
    <article class="ev d-cancha"><div class="ev-top"><span class="when">Fin de temporada ${S.year}</span><span class="dom">Cancha</span></div>
     <h2>${head}</h2>
-    <p class="txt">Terminaron <b>${r.pos}º de ${r.total}</b> en la ${lg.n}. Jugaste ${r.jug} partidos con ${r.g} ${r.g===1?'gol':'goles'} y ${r.a} ${r.a===1?'asistencia':'asistencias'}, y cerraste el año con media ${r.rating}.</p>
+    <p class="txt">Terminaron <b>${r.pos}º de ${r.total}</b> en la ${lg.n}. ${S.pos==='arquero'?`Jugaste ${r.jug} partidos bajo los palos`:`Jugaste ${r.jug} partidos con ${r.g} ${r.g===1?'gol':'goles'} y ${r.a} ${r.a===1?'asistencia':'asistencias'}`}, y cerraste el año con media ${r.rating}.</p>
     ${r.penales?`<p class="flav">Tu picardía te sacó ${r.penales} ${r.penales===1?'penal':'penales'} a favor. Los defensas rivales ya te tienen fichado.</p>`:''}
+    ${favHTML(r.fav)}
     ${r.goleador?`<p class="flav">Terminaste goleador del torneo. Te dieron un trofeo feo, pero tuyo.</p>`:''}
     ${S.contComp?`<p class="flav">Clasificaron a la ${S.contComp.n} del próximo año.</p>`:''}
     <p class="flav">Te pagaron el sueldo de la temporada: ${pesos(S.salary)}.</p></article>
@@ -3771,7 +4029,7 @@ function screenLiga(r){
 /* =================== BALANCE DEL AÑO: las stats cambian según cómo te fue =================== */
 function seasonGrowth(){
   const r=S.prev||{jug:0,pj:30,g:0,a:0,pos:8,total:16,rating:Math.round(playerRating())};
-  const lines=[],k=POSITIONS[S.pos].key,tech=['ritmo','resistencia','regate','pase','def'],lg=L(S.league),A=S.age+1;
+  const lines=[],k=POSITIONS[S.pos].key,tech=TECH,lg=L(S.league),A=S.age+1;
   const avgTech=tech.reduce((x,a)=>x+S[a],0)/5,chileTecho=r.rating>72?clamp(1-(r.rating-72)/12,.22,1):1;   // el techo del fútbol chileno
   const pot=clamp((S.techo-avgTech)/12,.3,1.2)*chileTecho;   // techo de potencial oculto
   const add=(ico,txt,d,min1)=>{const eff={};
@@ -3797,7 +4055,8 @@ function seasonGrowth(){
     if(r.g>=Math.max(3,exp*1.35))add('⚽',`${r.g} goles en el año: la confianza está por las nubes`,{def:2,forma:6});
     else if(S.pos==='delantero'&&r.jug>=10&&r.g<=exp*.5)add('😶',`Solo ${r.g} ${r.g===1?'gol':'goles'} en ${r.jug} partidos: la presión pesa`,{def:-1,forma:-6});
     if(r.a>=Math.max(4,r.jug*.2))add('🅰️',`${r.a} asistencias: estái viendo la cancha de otra manera`,{pase:2});
-  }else if(r.pos<=3)add('🧤','Pocos goles en contra: estái en tu mejor momento bajo los palos',{def:2,forma:4});
+  }else if(r.pos<=3)add('🧤','Pocos goles en contra: estái en tu mejor momento bajo los palos',{def:2,marca:1,forma:4});
+  if(S.pos==='defensa'&&r.pos<=4&&r.jug>=r.pj*.5)add('🛡️','Tu equipo fue de los que menos goles recibió',{marca:2});
   /* 4. el nivel de la liga contra el tuyo */
   const gap=lg.pow-r.rating;
   if(gap>=8&&A<=29)add('📈',`Jugar contra rivales de nivel ${lg.pow} te obligó a subir el tuyo`,{regate:1,pase:1,def:1});
@@ -3821,7 +4080,10 @@ function seasonGrowth(){
   if(S.items.kine)add('🩺','El kine personal te mantuvo entero',{resistencia:1},1);
   if(S.flags.capitan===S.club)add('🎖️','Llevar la jineta de capitán',{liderazgo:1,responsabilidad:1});
   /* 9. la edad */
-  if(A>=29){const d=Math.max(1,Math.round((A-28)*.9));add('⏳',`Cumplís ${A} años: las piernas ya no son las mismas`,{ritmo:-d,resistencia:-d,regate:-Math.round(d*.6)});}
+  if(A>=29){const d=Math.max(1,Math.round((A-28)*.9));
+    if(S.pos==='arquero'){add('⏳',`Cumplís ${A} años: ya no volái como antes`,{ritmo:-d,resistencia:-d,def:-Math.round(d*.6)});
+      add('🧭','Los años te enseñaron a pararte donde va la pelota',{regate:1});}
+    else add('⏳',`Cumplís ${A} años: las piernas ya no son las mismas`,{ritmo:-d,resistencia:-d,regate:-Math.round(d*.6)});}
   if(A<=23)add('🧩','Maduraste un poco más',{[pick(['liderazgo','responsabilidad','disciplina'])]:rnd(1,2)});
   if(A>=30&&S.partidos>=250)add('🎓','La experiencia también juega',{liderazgo:1,responsabilidad:1});
   /* 10. la vida en la casa */
@@ -3926,7 +4188,7 @@ function screenFinal(f){
     const m=bt.dataset.m;
     if(m==='penal')return render(screenMinigame({id:'final_penal',mg:'bar',skill:'def',dom:'minijuego',title:'El último penal',
       when:`${f.comp}, la final`,text:`Empataron y se fue a penales. Van 4 a 4 y te toca el último: si la metís, ${esc(S.club)} es campeón.`,
-      flavor:'El arquero rival te está hablando. No lo mirí.',ins:'Toca cuando la pelota esté en la zona blanca',
+      flavor:'El arquero rival te está hablando. No lo mirí.',ins:'Toca cuando la pelota esté en la zona amarilla',
       win:s=>ganar(),lose:s=>{const o=perder();o.t=`El arquero te la atajó. ${o.t}`;return o;}}));
     const b=snap();let p;
     if(m==='cara')p=clamp(base-.04+(ch(.5)?.08:-.06),.06,.85);
@@ -3963,7 +4225,7 @@ function screenLiguilla(){
     const m=bt.dataset.m;
     if(m==='penal')return render(screenMinigame({id:'liguilla_penal',mg:'bar',skill:'def',dom:'minijuego',title:'Penales en la liguilla',
       when:'La final de la liguilla',text:'Empate en el global y a penales. El que la mete, asciende. Te toca el quinto.',
-      flavor:'Medio estadio no está mirando.',ins:'Toca cuando la pelota esté en la zona blanca',win:s=>sube(),lose:s=>queda()}));
+      flavor:'Medio estadio no está mirando.',ins:'Toca cuando la pelota esté en la zona amarilla',win:s=>sube(),lose:s=>queda()}));
     const b=snap(),p=m==='cara'?clamp(base+(ch(.5)?.08:-.08),.08,.85):base;
     const out=ch(p)?sube():queda();clampAll();render(screenResult(out,b));
   }));
@@ -4060,6 +4322,7 @@ function generateOffers(){
     if(gap<=-12)p=.025;else if(gap<=-3)p=.05;else if(gap<=6)p=clamp((atr-36)/260,.01,.1);
     else if(gap<=14)p=clamp((atr-46)/300,0,.09);else p=clamp((atr-56)/320,0,.07);
     if(tier(t)===3&&atr<58)p*=.15;
+    if(t===S.fav)p=Math.max(p*3,.08);
     if(ch(p))cands.push({lid,club:t,str});}));
   const riv=RIVAL[S.club];
   if(riv&&atr>=52&&ch(.16)){const x=pick(riv),lid=CLUB_LEAGUE[x.club];if(lid&&!cands.some(o=>o.club===x.club))cands.push({lid,club:x.club,str:clubStrength(x.club,lid)});}
@@ -4067,8 +4330,42 @@ function generateOffers(){
   return cands.slice(0,S.items.rep?4:3).map(o=>({...o,sal:salaryFor(S,o.club,o.lid),rival:sonRivales(S.club,o.club)}));
 }
 function rolTxt(str){const d=playerRating()-str;return d>=-3?['Titular fijo','pos']:d>=-10?['A pelear el puesto','risk']:['Te va a costar jugar','neg'];}
+/* =================== LA HINCHADA ES DE CADA CLUB ===================
+   Cada club recuerda cuánto te quería. Al llegar a uno nuevo partís casi de cero;
+   si es el clásico rival de un club donde jugaste, te odian (números negativos). */
+const HINCHA_MIN=-80;
+function hinchadaAlCambiar(old,club){
+  S.hinchadas=S.hinchadas||{};
+  const hOld=S.hinchada;S.hinchadas[old]=hOld;
+  const ex=[old,...(S.exClubs||[])].filter((x,i,a)=>x&&a.indexOf(x)===i&&x!==club);
+  /* ¿vengo de jugar en el rival de este club? */
+  let odio=0,deDonde=null;
+  ex.forEach(x=>{if(sonRivales(x,club)){const h=S.hinchadas[x]??40;
+    const o=(x===old?15:5)+Math.max(0,h)*.55;if(o>odio){odio=o;deDonde=x;}}});
+  let nuevo,msg;
+  if(club in S.hinchadas){          // vuelves a un club donde ya jugaste: se acuerdan de ti
+    nuevo=Math.round(S.hinchadas[club]*.8);
+    msg=nuevo>=40?`En ${club} se acuerdan de ti: la galería te recibió cantando tu nombre.`
+      :nuevo<0?`En ${club} no se olvidan de cómo te fuiste. Te recibieron con pifias.`:`Vuelves a ${club}. Algunos se acuerdan de ti, otros no tanto.`;
+  }else{
+    nuevo=clamp(Math.round(S.prestigio*.2),3,20);
+    msg=`La hinchada de ${club} todavía no te conoce: te la vai a tener que ganar partido a partido.`;
+  }
+  if(odio>0&&-Math.round(clamp(odio,10,70))<nuevo){
+    nuevo=-Math.round(clamp(odio,10,70));
+    msg=odio>=35?`La barra de ${club} no te perdona haber jugado en ${deDonde}: te colgaron un lienzo que dice «NO TE QUEREMOS». Vai a tener que ganártelos con sangre.`
+      :`Los hinchas de ${club} te miran con desconfianza por tu paso por ${deDonde}. Te van a pifiar hasta que demostrís.`;
+  }
+  if(club===S.fav&&nuevo>=0){nuevo+=15;msg+=` Y erís hincha de ${club} de toda la vida: la galería lo sabe y te adoptó al tiro.`;}
+  if(S.fav&&sonRivales(club,S.fav))msg+=` Tu familia, hincha de ${S.fav}, no te habla hace una semana.`;
+  /* y tu ex club, si te vas a su archirrival, te pasa a odiar */
+  if(sonRivales(old,club))S.hinchadas[old]=-Math.round(clamp(30+Math.max(0,hOld)*.6,30,80));
+  S.hinchada=clamp(nuevo,HINCHA_MIN,100);
+  return msg;
+}
 function cambiarDeClub(club,lid,sal){
   const old=S.club,zonaAntes=zonaDe(old);
+  S.flags.msgHinchada=hinchadaAlCambiar(old,club);
   if(!S.exClubs.includes(old))S.exClubs.push(old);
   S.league=lid;S.club=club;S.salary=sal;S.flags.quiere_salir=false;
   if(S.amor.pareja&&zonaDe(club)!==S.amor.zona&&zonaDe(club)!==zonaAntes)S.amor.junto=0;   // la pareja se queda: amor a distancia
@@ -4082,7 +4379,7 @@ function screenFichajes(){
   const html=offers.map((o,i)=>{const rt=rolTxt(o.str),pct=Math.round((o.sal/Math.max(.1,S.salary)-1)*100);
     return card(i,o.club,o.lid,o.sal,`<span class="chip ${rt[1]}">${rt[0]}</span>${o.lid!==S.league?`<span class="chip ${L(o.lid).pow>cur.pow?'pos':'neg'}">${L(o.lid).pow>cur.pow?'Subís de división':'Bajái de división'}</span>`:''}
       ${pct>0?`<span class="chip money">+${miles(pct)}% sueldo</span>`:(pct<0?`<span class="chip neg">${pct}% sueldo</span>`:'')}
-      ${o.rival?'<span class="chip risk">😈 El archirrival de tu club</span>':''}`);}).join('');
+      ${o.rival?'<span class="chip risk">😈 El archirrival de tu club</span>':''}${o.club===S.fav?'<span class="chip amor">❤️ El club de tus amores</span>':''}`);}).join('');
   const quedar=pr?card(-2,pr.club,pr.lid,salaryFor(S,pr.club,pr.lid),`<span class="chip pos">Termina tu préstamo</span>`,`Volver a ${esc(pr.club)}`)
       +card(-1,S.club,S.league,S.salary,`<span class="chip pos">Te compran el pase</span>`,`Quedarme en ${esc(S.club)}`)
     :card(-1,S.club,S.league,S.salary,`<span class="chip pos">+6 Hinchada por fidelidad</span>`,`Quedarme en ${esc(S.club)}`);
@@ -4095,12 +4392,12 @@ function screenFichajes(){
     const b=snap(),i=+bt.dataset.i;let out;
     if(i>=0){
       const o=offers[i],old=S.club,subiendo=L(o.lid).pow>L(S.league).pow||o.str>clubStrength(S.club,S.league)+5;
-      S.flags.prestamo=null;S.hinchada-=8;cambiarDeClub(o.club,o.lid,o.sal);
-      if(o.rival){S.hinchada-=10;S.flags.traidor={club:old,lg:o.lid};S.flags.traidorJugado=0;hito(`Se cambió de ${old} al archirrival ${o.club}`);
-        out={hl:"¡Traición!",t:`Firmaste por ${o.club}, el archirrival de ${old}. En tu ex club quemaron tu camiseta en la puerta del estadio.`,bad:true};}
-      else out={t:`Firmaste con ${o.club}, de la ${lname(o.lid)}. ${subiendo?'Diste el salto: ahora hay que demostrar.':'Un paso al costado, pero vai a jugar más.'} Sueldo: ${pesos(o.sal)} por temporada.`};
+      S.flags.prestamo=null;cambiarDeClub(o.club,o.lid,o.sal);
+      if(o.rival){S.flags.traidor={club:old,lg:o.lid};S.flags.traidorJugado=0;hito(`Se cambió de ${old} al archirrival ${o.club}`);
+        out={hl:"¡Traición!",t:`Firmaste por ${o.club}, el archirrival de ${old}. En tu ex club quemaron tu camiseta en la puerta del estadio. ${S.flags.msgHinchada||''}`,bad:true};}
+      else out={t:`Firmaste con ${o.club}, de la ${lname(o.lid)}. ${subiendo?'Diste el salto: ahora hay que demostrar.':'Un paso al costado, pero vai a jugar más.'} Sueldo: ${pesos(o.sal)} por temporada. ${S.flags.msgHinchada||''}`};
     }else if(i===-2){const p=S.flags.prestamo;S.flags.prestamo=null;cambiarDeClub(p.club,p.lid,salaryFor(S,p.club,p.lid));
-      out={t:`Volviste a ${p.club} con otro roce. El técnico te dijo que esta vez vai a tener minutos.`};}
+      out={t:`Volviste a ${p.club} con otro roce. El técnico te dijo que esta vez vai a tener minutos. ${S.flags.msgHinchada||''}`};}
     else{if(pr){S.flags.prestamo=null;S.salary=salaryFor(S,S.club,S.league);out={t:`${S.club} te compró el pase. Te quedái donde te sentiste importante.`};}
       else{S.hinchada+=6;out={t:`Te quedaste en ${S.club}. La galería valoró la fidelidad y te cantó en el último partido.`};}}
     clampAll();render(screenResult(out,b));
@@ -4116,6 +4413,7 @@ function advanceSeason(){
   S.prev=null;
   S.season++;S.age++;S.year++;S.mes='enero';
   if(S.age>=31)S.prestigio-=2;
+  if(S.hinchada<0)S.hinchada+=rnd(4,8);            // el tiempo (y los buenos partidos) enfrían el odio
   S.carrete-=(S.age<24?3:6)+(S.flags.relacion==='piola'?3:0)-rnd(0,2);
   if(S.renta)addPlata(S.renta);
   /* los seguidores crecen con la fama, la hinchada y la picardía */
@@ -4143,7 +4441,7 @@ function screenRetire(){
 const DESP_PENAL={id:"despedida_penal",mg:"bar",skill:"def",dom:"minijuego",title:"El último penal",
  when:()=>`Tu despedida, ${estadio(S.club)}`,
  text:"Minuto 90 del partido de despedida. El árbitro cobra un penal que no existe y todo el estadio sabe por qué. La pelota es tuya.",
- flavor:"Tu vieja está en la tribuna con un lienzo que dice «GRACIAS, HIJO».",ins:"Toca cuando la pelota esté en la zona blanca",
+ flavor:"Tu vieja está en la tribuna con un lienzo que dice «GRACIAS, HIJO».",ins:"Toca cuando la pelota esté en la zona amarilla",
  win:s=>{s.hinchada+=8;hito("Se despidió con un gol de penal");return {hl:"¡Gracias por todo!",t:`La cruzaste al ángulo y el estadio entero se puso de pie. ${celebra()} Después te sacaron en andas.`};},
  lose:s=>{s.hinchada+=5;return {t:"La tiraste a las nubes. El estadio se rió, te aplaudió igual y cantó tu nombre diez minutos. Así se despiden los ídolos."};}};
 function screenDespedida(forzado){
@@ -4203,7 +4501,7 @@ function scoreOf(){
     Math.min(400,S.seguidores/5000)+S.amor.hijos*40));
 }
 function cells(){return `<div class="grid3">
-  <div class="cell"><b>${S.goles}</b><span>goles</span></div><div class="cell"><b>${S.asistencias}</b><span>asistencias</span></div>
+  ${S.pos==='arquero'?`<div class="cell"><b>${S.atajadas||0}</b><span>penales atajados</span></div>`:`<div class="cell"><b>${S.goles}</b><span>goles</span></div>`}<div class="cell"><b>${S.asistencias}</b><span>asistencias</span></div>
   <div class="cell"><b>${S.partidos}</b><span>partidos</span></div><div class="cell"><b>${S.titulos}</b><span>títulos</span></div>
   <div class="cell"><b>${S.temporadas}</b><span>temporadas</span></div><div class="cell"><b class="sm">${miles(S.seguidores)}</b><span>seguidores</span></div></div>
   <div class="cell wide"><b>${pesos(S.plata)}</b><span>plata en el banco</span></div>`;}
@@ -4284,7 +4582,7 @@ function screenHOF(mine){
 
 
 /* =================== INICIO Y STATS DURANTE LA PARTIDA =================== */
-function topbarHTML(){return `<nav class="topbar" aria-label="Menú de la partida"><button id="tbHome">🏠 Inicio</button><button id="tbStats">📊 Mis stats</button></nav>`;}
+function topbarHTML(){return `<nav class="topbar" aria-label="Menú de la partida"><button id="tbHome">🏠 Inicio</button><button id="tbStats">📊 Stats</button><button id="tbAmor">💞 Amor</button><button id="tbRedes">📱 Redes</button></nav>`;}
 function askConfirm(msg,si,no,onYes){
   const old=document.getElementById('askBox');if(old)old.remove();
   const bg=document.createElement('div');bg.className='sheet-bg ask-bg';bg.id='askBox';
@@ -4302,10 +4600,9 @@ function goHome(){
 }
 function closeStats(){const o=document.getElementById('statsSheet');if(o)o.remove();}
 function statsHTML(){
-  const tech=['ritmo','resistencia','regate','pase','def'],men=['agresividad','responsabilidad','liderazgo','disciplina','picardia'];
-  const full={ritmo:'Ritmo',resistencia:'Resistencia',regate:'Regate',pase:'Pase',agresividad:'Agresividad',responsabilidad:'Responsabilidad',
-    liderazgo:'Liderazgo',disciplina:'Disciplina',picardia:'Picardía'};
-  const nm=k=>k==='def'?POSITIONS[S.pos].ab:full[k];
+  const tech=TECH_ORDER[tipoPos()],men=['agresividad','responsabilidad','liderazgo','disciplina','picardia'];
+  const full={agresividad:'Agresividad',responsabilidad:'Responsabilidad',liderazgo:'Liderazgo',disciplina:'Disciplina',picardia:'Picardía'};
+  const nm=k=>TECH_NAME[tipoPos()][k]||full[k];
   const attrs=[...tech,...men].map(a=>`<div><span>${nm(a)}</span><b>${S[a]}</b></div>`).join('');
   const h=S.history||[];
   const tabla=h.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Año</th><th>Club</th><th class="n">PJ</th><th class="n">⚽</th><th class="n">🅰️</th><th class="n">Pos.</th></tr></thead><tbody>
@@ -4313,7 +4610,7 @@ function statsHTML(){
     </tbody></table></div>`:`<p class="muted small">Cuando termine tu primera temporada vai a ver acá el resumen año a año.</p>`;
   const clubes=[...(S.exClubs||[]),S.club].filter((x,i,a)=>a.indexOf(x)===i);
   return `<div class="sheet-head"><h2>${esc(S.name)}${S.apodo?` «${esc(S.apodo)}»`:''}</h2><button id="stClose" aria-label="Cerrar stats">✕</button></div>
-   <p class="muted small">${POSITIONS[S.pos].label}, ${S.age} años. Temporada ${S.season} en ${esc(S.club)}. Media ${Math.round(playerRating())}.</p>
+   <p class="muted small">${POSITIONS[S.pos].label}, ${S.age} años. Temporada ${S.season} en ${esc(S.club)}. Media ${Math.round(playerRating())}.${S.fav?` Hincha de ${esc(S.fav)} ❤️`:''}</p>
    <div class="card"><h3>Los números de la carrera</h3>${cells()}</div>
    <div class="card"><h3>Temporada a temporada</h3>${tabla}</div>
    ${sparkHTML()}
@@ -4325,6 +4622,151 @@ function statsHTML(){
    ${prontuHTML()}
    <div class="stack"><button class="btn" id="stBack">Volver al juego</button></div>`;
 }
+
+/* =================== PESTAÑAS: VIDA AMOROSA Y REDES SOCIALES ===================
+   Una acción por pestaña en cada paso de la temporada (entre evento y evento). */
+const usado=k=>S.acc&&S.acc[k]===S.pasos;
+const usar=k=>{S.acc=S.acc||{};S.acc[k]=S.pasos;};
+const ESTADO_TXT={pololeando:'Pololeando',conviviendo:'Viviendo juntos',comprometido:'Comprometidos',casado:'Casados'};
+function tabAccion(a,cost){
+  const f=cost&&cost>S.plata+.0005;
+  return `<button class="opt tabact" data-a="${a.id}" ${f||a.off?'disabled':''}>${a.label}${a.sub?`<span class="sub">${a.sub}</span>`:''}${f?`<span class="sub nope">No te alcanza: te faltan ${pesos(cost-S.plata)}</span>`:''}${chipsFor(a)}</button>`;
+}
+/* ---------- AMOR ---------- */
+const CITAS=[
+ {id:'completo',label:'Completos en la Fuente Alemana',money:-.03,q:[2,4],t:p=>`Se comieron dos italianos con harta palta mirando pasar la gente por la Alameda. ${p} se rió de cómo te chorreaba la mayo.`},
+ {id:'cerro',label:'Picnic en el cerro San Cristóbal',q:[3,5],t:p=>`Subieron en el funicular, se tiraron en el pasto con un termo de té y vieron la ciudad prenderse. ${p} te sacó una foto que va directo al fondo de pantalla.`},
+ {id:'cena',label:'Cena en un restorán top de Vitacura',money:-.25,q:[4,7],t:p=>`Menú degustación de nueve tiempos. Salieron con hambre, pero ${p} dijo que fue la mejor noche del año.`},
+ {id:'escapada',label:'Escapada de fin de semana a Viña',money:-.8,q:[7,11],dd:{forma:3},t:p=>`Hotel con vista al mar, paseo por la costanera y chorrillana en Valparaíso. Volvieron como en luna de miel.`},
+ {id:'cine',label:'Maratón de series en la casa',q:[1,3],dd:{forma:2},t:p=>`Pizza, frazada y tres temporadas seguidas. ${p} se durmió a la mitad y tú viste el final solo.`}];
+const REGALOS=[
+ {id:'flores',label:'Un ramo de flores',money:-.04,q:[2,4],t:p=>`Llegaste con flores sin motivo. ${p} te preguntó qué habíai hecho.`},
+ {id:'perfume',label:'Un perfume importado',money:-.15,q:[3,6],t:p=>`${p} lo usó al día siguiente y te mandó una selfie oliéndose la muñeca.`},
+ {id:'joya',label:'Una joya',money:-1.5,q:[6,10],t:p=>`Cuando abrió la cajita, ${p} se tapó la boca. Hubo lágrimas de las buenas.`},
+ {id:'viaje',label:'Pasajes a Brasil pa\' las vacaciones',money:-3,q:[9,14],dd:{forma:4},t:p=>`Diez días en Florianópolis. ${p} ya está planificando el próximo.`},
+ {id:'auto',label:'Un auto 0 km con rosa en el capó',money:-25,q:[12,18],seg:30000,t:p=>`Le regalaste un auto nuevo con una rosa gigante. ${p} gritó, la vecina grabó y el video se hizo viral.`}];
+/* repetir lo mismo en la misma temporada rinde cada vez menos */
+function repite(id,soloMirar){const a=S.amor;a.rep=a.rep||{};const k=id+'@'+S.year,n=a.rep[k]||0;if(!soloMirar)a.rep[k]=n+1;return 1/(1+n);}
+function accionesAmor(){
+  const a=S.amor,q=a.quimica,list=[];
+  if(S.age<18)return {msg:'El amor aparece recién a los 18. Por ahora, la pelota.',list};
+  if(!a.pareja){
+    if(a.cool)return {msg:'Todavía estái pasando la pena. Date un tiempo: el próximo año vuelves a la pista.',list};
+    list.push({id:'app',label:'Abrirte una app de citas',sub:'Mientras más seguidores tengái, más match',
+      run:()=>{const p=clamp(.28+S.seguidores/400000+S.prestigio/300,.25,.75);
+        if(ch(p)){empezarPololeo(rnd(46,58));return `Hiciste match con ${par().n}, ${par().of}. Una cita llevó a la otra y ya están pololeando.`;}
+        return {t:'Mandaste veinte mensajes y te respondieron dos, uno era un bot. Mañana será otro día.',bad:true};}});
+    list.push({id:'carrete',label:'Salir a carretear a conocer gente',d:{carrete:4},sub:'Más chance, pero sube el carrete',
+      run:()=>{if(ch(.45+(S.picardia-50)/150)){empezarPololeo(rnd(44,56));return `Esa noche conociste a ${par().n}, ${par().of}, en la pista de baile. A la semana ya eran pololos.`;}
+        return {t:'Bailaste hasta las 5 y volviste solo, con los pies destruidos.',bad:true};}});
+    list.push({id:'amigos',label:'Que un amigo te presente a alguien',
+      run:()=>{if(ch(.4)){empezarPololeo(rnd(50,62));return `Tu amigo te presentó a ${par().n}, ${par().of}. Hubo química desde el primer café.`;}
+        return 'La cita fue simpática, pero no pasó nada. Quedaron como amigos.';}});
+    return {list};
+  }
+  const P=par().n;
+  const cita=c=>({id:'cita_'+c.id,label:'Cita: '+c.label,money:c.money,d:c.dd,run:()=>{
+      if(q<30&&ch(.25)){amor(-3);return {t:`La cita terminó en pelea por una weá chica. Se nota que la relación no está bien.`,bad:true};}
+      const f=repite('cita_'+c.id);amor(Math.max(1,Math.round(rnd(c.q[0],c.q[1])*f)));return c.t(P)+(f<1?` Eso sí, ya lo han hecho harto este año: la magia no es la misma.`:'');}});
+  const regalo=r=>({id:'reg_'+r.id,label:'Regalo: '+r.label,money:r.money,d:r.dd,run:()=>{
+      amor(Math.max(1,Math.round(rnd(r.q[0],r.q[1])*repite('reg_'+r.id))));if(r.seg)S.seguidores+=r.seg;return r.t(P);}});
+  CITAS.forEach(c=>list.push(cita(c)));
+  REGALOS.forEach(r=>list.push(regalo(r)));
+  /* pasos de la relación */
+  const años=S.year-(a.desde||S.year);
+  if(a.estado==='pololeando')list.push({id:'vivir',label:`Proponerle a ${P} irse a vivir juntos`,off:q<60||años<1,
+    sub:q<60||años<1?'Necesitan más química (60) y al menos un año juntos':'Un paso grande',
+    run:()=>{if(ch(clamp(.5+(q-60)/60,.4,.95))){convivir();hito(`Se fue a vivir con ${P}`);return `${P} dijo que sí. Ahora discuten por quién lava la loza.`;}
+      amor(-6);return {t:`${P} te dijo que todavía no está preparad${pa('a','o')}. Quedó un silencio incómodo.`,bad:true};}});
+  if((a.estado==='pololeando'||a.estado==='conviviendo')&&!(a.pedidaY===S.year))list.push({id:'pedida',label:`Pedirle matrimonio a ${P}`,money:-1.2,off:q<65,
+    sub:q<65?'Necesitan química 65 o más':'Anillo incluido',run:()=>{a.pedidaY=S.year;return pedida(0,'Te arrodillaste en un mirador de Valparaíso con el anillo en la mano.',false);}});
+  if(a.estado==='comprometido')list.push({id:'boda',label:`Casarte con ${P}`,money:-8,sub:'Fiesta en una viña, familia completa',
+    run:()=>casarse('en una viña del Valle de Casablanca',`Se casaron en una viña con doscientos invitados. Tu viejo lloró en el discurso y el DJ puso cumbia hasta las 6.`,true)});
+  if((a.estado==='casado'||a.estado==='conviviendo')&&S.age>=22&&a.ultBebe!==S.year&&a.ultBebe!==S.year-1)list.push({id:'guagua',label:'Buscar una guagua',off:q<65,
+    sub:q<65?'Necesitan química 65 o más':'Puede tardar',run:()=>ch(.45)?bebe('sana y llorona'):'Por ahora no pasó nada, pero están felices intentándolo.'});
+  list.push({id:'terminar',label:`Terminar con ${P}`,sub:'No hay vuelta atrás',
+    run:()=>{amor(0);const r=quiebre(`Terminaste con ${P}. Fue una conversación larga y triste en el auto, afuera de su casa.`);return r;}});
+  return {list};
+}
+function amorHead(){
+  const a=S.amor;
+  if(!a.pareja)return `<div class="card"><h3>Soltero</h3><p class="muted">${a.hist.length?`${a.hist.length} ${a.hist.length===1?'relación':'relaciones'} en tu historia.`:'Todavía no has pololeado con nadie.'}</p></div>`;
+  const P=a.pareja,q=a.quimica;
+  return `<div class="card pareja"><div class="ph">${P.g==='m'?'👨':'👩'}</div><div class="pw"><b>${esc(P.n)}</b><span>${esc(P.of)}</span>
+     <span>${ESTADO_TXT[a.estado]||''} desde ${a.desde}${a.hijos?` · 👶 ${a.hijos}`:''}</span></div></div>
+   <div class="card"><div class="mt"><span>Química</span><b>${q}</b></div><div class="bar big"><i class="b-amor" style="width:${q}%"></i></div>
+   <p class="muted small" style="margin-top:6px">${q>=75?'Están en su mejor momento.':q>=50?'Van bien, pero no se duerman.':q>=30?'Se nota el desgaste: dale cariño.':'La relación pende de un hilo.'}</p></div>`;
+}
+/* ---------- REDES ---------- */
+const CANJES=[
+ {id:'energetica',label:'Canje con una bebida energética',k:.4,min:15000},
+ {id:'zapatillas',label:'Canje con una marca de zapatillas',k:.8,min:40000,d:{picardia:1}},
+ {id:'comida',label:'Canje con una cadena de comida rápida',k:.6,min:25000,d:{forma:-2}},
+ {id:'autos',label:'Embajador de una automotora',k:1.2,min:120000,pre:50},
+ {id:'banco',label:'Comercial para un banco',k:1.6,min:250000,pre:60,d:{responsabilidad:1}},
+ {id:'apuestas',label:'Publicidad a una casa de apuestas',k:2.2,min:60000,d:{prestigio:-4,responsabilidad:-3,hinchada:-3},sub:'Pagan harto, pero la gente te critica'}];
+function accionesRedes(){
+  const list=[],seg=S.seguidores,base=Math.round(300+seg*.03+S.prestigio*40);
+  list.push({id:'foto',label:'Subir foto canchereando en el camarín',d:{picardia:2},sub:`+${miles(base)} seguidores aprox.`,
+    run:()=>{S.seguidores+=base+rnd(0,base/3|0);return pick(['La foto con los lentes de sol y la toalla al hombro reventó. Los comentarios son puros 🔥.','Te sacaste una foto sin polera frente al espejo del camarín. Tu vieja comentó «abrígate».']);}});
+  if(S.age>=18)list.push({id:'carrete',label:'Subir historia del carrete',d:{picardia:3,carrete:4},risk:'25% te reta el club',
+    run:()=>{S.seguidores+=Math.round(base*1.4);
+      if(ch(S.items.cm?.12:.25)){S.disciplina-=3;S.prestigio-=2;prontu('Historia de carrete que llegó a la dirigencia');return {hl:'¡La historia que no debió subir!',t:'Subiste una historia con copete en la mano un jueves. El gerente deportivo te citó a su oficina a primera hora.',bad:true};}
+      return 'Subiste una historia en la previa con los cabros. Nadie del club la vio, o se hicieron los locos.';}});
+  list.push({id:'entreno',label:'Video entrenando en el gimnasio',d:{responsabilidad:1,hinchada:2},
+    run:()=>{S.seguidores+=Math.round(base*.7);return 'Subiste un video haciendo sentadillas con 120 kilos. La hinchada comentó «ese es el compromiso».';}});
+  list.push({id:'indirecta',label:'Tirarle una indirecta a un rival',d:{agresividad:2,picardia:2},risk:'la prensa se hace un festín',
+    run:()=>{S.seguidores+=Math.round(base*2);if(ch(.35)){S.prestigio-=2;return {hl:'¡Guerra en redes!',t:'Tu indirecta se hizo tendencia. El rival te respondió y ahora hay debate en todos los programas deportivos.',bad:true};}
+      S.hinchada+=3;return 'Subiste un meme picado contra el rival de turno. Tu hinchada lo compartió diez mil veces.';}});
+  list.push({id:'live',label:'Hacer un live respondiendo preguntas',d:{hinchada:3},
+    run:()=>{S.seguidores+=Math.round(base*.8);return 'Estuviste una hora respondiendo preguntas. Te preguntaron cuánto ganái y dijiste «lo justo».';}});
+  if(S.amor.pareja)list.push({id:'pareja',label:`Subir foto con ${esc(par().n)}`,
+    run:()=>{S.seguidores+=Math.round(base*1.2);amor(3);return `La foto con ${par().n} tiene más likes que tu último gol. ${par().n} la dejó como destacada.`;}});
+  /* canjes: se desbloquean con fama; uno de cada tipo por temporada */
+  S.canjes=S.canjes||{};
+  CANJES.forEach(c=>{
+    const lock=seg<c.min||(c.pre&&S.prestigio<c.pre),hecho=S.canjes[c.id]===S.year,m=canje(c.k);
+    list.push({id:'canje_'+c.id,canje:true,label:c.label,money:lock||hecho?0:m,d:c.d,off:lock||hecho,
+      sub:lock?`Necesitái ${miles(c.min)} seguidores${c.pre?` y prestigio ${c.pre}`:''}`:hecho?'Ya lo hiciste esta temporada':c.sub,
+      run:()=>{S.canjes[c.id]=S.year;S.seguidores+=Math.round(base*.5);
+        return c.id==='apuestas'?'Grabaste el comercial. Te pagaron bien, pero en redes te llovieron críticas por promocionar apuestas.'
+          :`Firmaste el canje y subiste el post con #publicidad. Te depositaron ${pesos(m)}.`;}});
+  });
+  return {list};
+}
+function redesHead(){
+  return `<div class="card redes-head"><div><b>${miles(S.seguidores)}</b><span>seguidores</span></div><div><b>${S.picardia}</b><span>picardía</span></div><div><b>${S.prestigio}</b><span>prestigio</span></div></div>`;
+}
+/* ---------- la hoja ---------- */
+function openTab(kind,res){
+  if(!S)return;closeStats();
+  const A=kind==='amor'?accionesAmor():accionesRedes();
+  const ya=usado(kind);
+  const head=kind==='amor'?amorHead():redesHead();
+  const secc=kind==='amor'?[['Citas',x=>/^cita_/.test(x.id)],['Regalos',x=>/^reg_/.test(x.id)],[S.amor.pareja?'La relación':'Buscar pareja',x=>!/^(cita_|reg_)/.test(x.id)]]
+    :[['Publicar',x=>!x.canje],['Canjes y auspicios',x=>x.canje]];
+  const body=A.msg?`<p class="muted" style="margin-top:12px">${A.msg}</p>`
+    :ya?`<p class="hint">Ya hiciste algo ${kind==='amor'?'con tu vida amorosa':'en redes'} este mes. Vuelve después del próximo evento.</p>`
+    :secc.map(([t,f])=>{const l=A.list.filter(f);return l.length?`<h3 class="tabh">${t}</h3><div class="opts">${l.map(a=>tabAccion(a,a.money<0?-a.money:0)).join('')}</div>`:'';}).join('');
+  const bg=document.createElement('div');bg.className='sheet-bg';bg.id='statsSheet';
+  bg.innerHTML=`<div class="sheet" role="dialog" aria-modal="true"><div class="sheet-head"><h2>${kind==='amor'?'💞 Vida amorosa':'📱 Redes sociales'}</h2><button id="stClose" aria-label="Cerrar">✕</button></div>
+    ${res||''}${head}${body}<div class="stack"><button class="btn ghost" id="stBack">Volver al juego</button></div></div>`;
+  document.body.appendChild(bg);
+  bg.onclick=e=>{if(e.target===bg)closeStats();};
+  bg.querySelector('#stClose').onclick=closeStats;bg.querySelector('#stBack').onclick=closeStats;
+  bg.querySelectorAll('.tabact:not([disabled])').forEach(b=>b.onclick=()=>{
+    const a=A.list.find(x=>x.id===b.dataset.a);if(!a||usado(kind))return;
+    const bs=snap();
+    if(a.d)for(const k in a.d)S[k]=(S[k]||0)+a.d[k];
+    if(a.money)addPlata(a.money);
+    let out=a.run();if(typeof out==='string')out={t:out};
+    usar(kind);carretePicardia(bs);clampAll();
+    const cur=document.querySelector('#app>div');if(cur)refreshHud(cur);
+    const r=`<div class="tab-res ${out.bad?'bad':''}">${out.hl?`<b class="hl">${out.hl}</b>`:''}<p>${out.t}</p>${diffHTML(bs)}</div>`;
+    openTab(kind,r);
+  });
+}
+
 function openStats(){
   if(!S)return;closeStats();
   const bg=document.createElement('div');bg.className='sheet-bg';bg.id='statsSheet';
@@ -4367,6 +4809,8 @@ function screenSetup(){
    <div class="field"><label for="selLeague">División donde partís</label><select class="sel" id="selLeague"><option value="">🎲 Al azar</option>${['CHI_2','CHI_B','CHI_1'].map(k=>`<option value="${k}">${L(k).n}</option>`).join('')}</select></div>
    <div class="field"><label for="selClub">Club</label><select class="sel" id="selClub"><option value="">🎲 Al azar</option></select>
      <p class="muted small" style="margin-top:6px">En un grande pagan más, pero te va a costar tener minutos.</p></div>
+   <div class="field"><label for="selFav">Tu equipo del alma</label><select class="sel" id="selFav"><option value="">Ninguno en especial</option>${['CHI_1','CHI_B','CHI_2'].map(k=>`<optgroup label="${L(k).n}">${L(k).teams.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('')}</optgroup>`).join('')}</select>
+     <p class="muted small" style="margin-top:6px">Al club de tus amores le va a ir un pelo mejor todos los años, y te va a mirar con cariño en el mercado de pases.</p></div>
    <div class="stack"><button class="btn" id="btnConfirm">Salir a la cancha</button><button class="btn ghost" id="btnBack">Volver</button></div>`,false);
   const g=c.querySelector('#posg');
   g.querySelectorAll('.posb').forEach(b=>b.onclick=()=>{
@@ -4381,7 +4825,7 @@ function screenSetup(){
   sl.onchange=()=>{const id=sl.value;
     sc.innerHTML='<option value="">🎲 Al azar</option>'+(id?L(id).teams.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join(''):'');};
   c.querySelector('#btnConfirm').onclick=()=>{
-    S=newState({name:c.querySelector('#inpName').value,pos,pref,league:sl.value||null,club:sc.value||null});
+    S=newState({name:c.querySelector('#inpName').value,pos,pref,league:sl.value||null,club:sc.value||null,fav:c.querySelector('#selFav').value||null});
     clearGame();render(screenSorteo());};
   c.querySelector('#btnBack').onclick=()=>render(screenTitle());
   return c;
